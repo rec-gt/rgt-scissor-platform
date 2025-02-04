@@ -3,7 +3,7 @@ const int sensorPins[] = { A0, A1, A2, A3, A4, A5, A6, A7, A8, A9 };
 const int numSensors = 10;
 
 const int buttonPin = 2;
-const int relayPin = 12;
+const int relayPin = 4;
 const int warningLightPin = 13;
 const int powerLightPin = 14;
 const int switchPin = 15;
@@ -81,6 +81,8 @@ void handleWarningLight(bool toggle) {
 }
 
 void handleRelay(bool toggle) {
+  // set relay to true means give 5v to it, making it NO (relay disconnected)
+  // set relay to false means give 0v to it, making it NC (relay connected)
   digitalWrite(relayPin, toggle ? HIGH : LOW);
 }
 
@@ -109,7 +111,7 @@ void listenButton() {
 
   if (buttonState == LOW) {  // once button is pressed
     // handleWarningLight(false);
-    // handleRelay(true);
+    handleRelay(false);
     Serial.println("Allow Running for 10s");
 
     // set current time for countdown
@@ -148,13 +150,10 @@ void handleTimer() {
 }
 
 void loop() {
-  // Serial.println(buttonState);
-
-
   handlePowerLight();  // init power light, always on
-  handleRelay(true);   // init NC relay
 
   if (systemStatus == RUNNING) {
+    handleRelay(false);
     listenSensors();
   }
 
