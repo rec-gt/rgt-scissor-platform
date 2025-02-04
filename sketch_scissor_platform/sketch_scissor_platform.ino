@@ -81,6 +81,7 @@ void handleWarningLight(bool toggle) {
 }
 
 void handleRelay(bool toggle) {
+  Serial.println(digitalRead(relayPin));
   // set relay to true means give 5v to it, making it NO (relay disconnected)
   // set relay to false means give 0v to it, making it NC (relay connected)
   digitalWrite(relayPin, toggle ? HIGH : LOW);
@@ -94,15 +95,11 @@ void listenSensors() {
   //   if (distance > thresholdDistance()) {
   //     handleChangeStatus(STOPPED);
   //     handleWarningLight(true);
-  //     handleRelay(false);
   //   }
   // }
 
-  int sensorValue = analogRead(A2);
-  Serial.println(sensorValue);
-
-  // Serial.println("Obstacle detected!");
-  // handleChangeStatus(STOPPED);
+  Serial.println("Obstacle detected!");
+  handleChangeStatus(STOPPED);
 }
 
 void listenButton() {
@@ -111,7 +108,6 @@ void listenButton() {
 
   if (buttonState == LOW) {  // once button is pressed
     // handleWarningLight(false);
-    handleRelay(false);
     Serial.println("Allow Running for 10s");
 
     // set current time for countdown
@@ -158,10 +154,12 @@ void loop() {
   }
 
   if (systemStatus == STOPPED) {
+    handleRelay(true);
     listenButton();
   }
 
   if (systemStatus == ALLOW_10S) {
+    handleRelay(false);
     handleTimer();
   }
 
