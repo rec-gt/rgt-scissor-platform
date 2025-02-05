@@ -3,6 +3,7 @@
 #include "relay.h"
 #include "light.h"
 #include "speaker.h"
+#include "countdown.h"
 
 ScissorPlatformSystem system1;
 Button button1(20);
@@ -26,6 +27,8 @@ void loop() {
     // listenSensors();
     delay(3000);
     system1.setStatus(STOPPED);
+    system1.printStatus();
+
   }
 
   if (system1.getStatus() == STOPPED) {
@@ -36,16 +39,21 @@ void loop() {
     if (button1.isPressed()) {
       system1.setStatus(ALLOW_10S);
     }
-
-    // listenButton();
   }
 
   if (system1.getStatus() == ALLOW_10S) {
     relay1.on();
     warningLight.off();
     speaker.off();
-    // handleTimer();
+
+    CountdownTimer countdownTimer(10);
+    countdownTimer.start(countDownCallback);
   }
 
   delay(10);
+}
+
+void countDownCallback() {
+  Serial.println("countdown finish");
+  system1.setStatus(RUNNING);
 }
