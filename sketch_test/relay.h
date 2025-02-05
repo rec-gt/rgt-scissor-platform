@@ -9,11 +9,7 @@ private:
 public:
   Relay(byte pin) {
     this->pin = pin;
-    init();
-  }
-
-  void init() {
-    pinMode(pin, OUTPUT);
+    pinMode(this->pin, OUTPUT);
   }
 
   void on() {
