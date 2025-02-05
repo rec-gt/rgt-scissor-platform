@@ -26,3 +26,10 @@ public:
     // return measuredDistance >= this->baseDistance + this->bufferDistance;
   }
 };
+
+// class LaserSensorGroup {
+// private:
+//   this->LaserSensor[] laserSensors;
+// public:
+//   LaserSensorGroup(LaserSensor[] laserSensors) {}
+// }

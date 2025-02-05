@@ -7,22 +7,18 @@ private:
 public:
   Speaker(byte pin) {
     this->pin = pin;
-    init();
-  }
-
-  void init() {
-    pinMode(pin, OUTPUT);
+    pinMode(this->pin, OUTPUT);
   }
 
   void on() {
-    digitalWrite(pin, HIGH);
+    digitalWrite(this->pin, HIGH);
   }
 
   void off() {
-    digitalWrite(pin, LOW);
+    digitalWrite(this->pin, LOW);
   }
 
   void print() {
-    Serial.println(digitalRead(pin));
+    Serial.println(digitalRead(this->pin));
   }
 };

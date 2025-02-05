@@ -7,7 +7,7 @@ private:
 public:
   Button(byte pin) {
     this->pin = pin;
-    pinMode(pin, INPUT);
+    pinMode(this->pin, INPUT);
   }
 
   void listen() {

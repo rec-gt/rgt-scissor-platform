@@ -13,14 +13,14 @@ public:
   }
 
   void on() {
-    digitalWrite(pin, HIGH);
+    digitalWrite(this->pin, HIGH);
   }
 
   void off() {
-    digitalWrite(pin, LOW);
+    digitalWrite(this->pin, LOW);
   }
 
   void print() {
-    Serial.println(digitalRead(pin));
+    Serial.println(digitalRead(this->pin));
   }
 };
