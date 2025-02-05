@@ -15,8 +15,8 @@ CountdownTimer countdownTimer(10);
 
 void setup() {
   Serial.begin(9600);
-
   system1.setStatus(RUNNING);
+  system1.printStatus();
 }
 
 void loop() {
@@ -25,7 +25,7 @@ void loop() {
     relay1.on();
 
     // listenSensors();
-    delay(3000);
+    delay(2000);
     system1.setStatus(STOPPED);
     system1.printStatus();
   }
