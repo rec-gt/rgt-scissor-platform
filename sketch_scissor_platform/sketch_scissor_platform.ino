@@ -60,14 +60,14 @@ void loop() {
   }
 
   if (systemStatus == STOPPED) {
-    handleRelay(true);
+    handleRelay(false);
     handleWarningLight(true);
     handleSpeaker(true);
     listenButton();
   }
 
   if (systemStatus == ALLOW_10S) {
-    handleRelay(false);
+    handleRelay(true);
     handleWarningLight(false);
     handleSpeaker(false);
     handleTimer();
