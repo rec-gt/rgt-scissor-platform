@@ -9,7 +9,7 @@ enum SystemStatus {
 const char* STATUS_STR[] = { "STOPPED", "RUNNING", "ALLOW_10S" };
 
 
-class ScissorPlatformSystem {
+class DetectSystem {
 private:
   SystemStatus status = RUNNING;
 

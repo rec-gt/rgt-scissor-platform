@@ -1,4 +1,4 @@
-#include "spSystem.h"
+#include "detectSystem.h"
 #include "button.h"
 #include "relay.h"
 #include "light.h"
@@ -6,7 +6,7 @@
 #include "countdown.h"
 #include "laserSensor.h"
 
-ScissorPlatformSystem SPSystem;
+DetectSystem detectSystem;
 
 Button button(2);
 
@@ -38,32 +38,32 @@ void setup() {
   Serial.begin(9600);
 
   powerLight.on();
-  SPSystem.setStatus(RUNNING);
-  SPSystem.printStatus();
+  detectSystem.setStatus(RUNNING);
+  detectSystem.printStatus();
 }
 
 void loop() {
   button.listen();
 
-  if (SPSystem.getStatus() == RUNNING) {
+  if (detectSystem.getStatus() == RUNNING) {
     relay.on();
     listenSensors();
   }
 
-  if (SPSystem.getStatus() == STOPPED) {
+  if (detectSystem.getStatus() == STOPPED) {
     relay.off();
     warningLight.on();
     speaker.on();
 
     if (button.isPressed()) {
       Serial.println("10s Button Pressed");
-      SPSystem.setStatus(ALLOW_10S);
-      SPSystem.printStatus();
+      detectSystem.setStatus(ALLOW_10S);
+      detectSystem.printStatus();
       countdownTimer.setStart(millis());
     }
   }
 
-  if (SPSystem.getStatus() == ALLOW_10S) {
+  if (detectSystem.getStatus() == ALLOW_10S) {
     relay.on();
     warningLight.off();
     speaker.off();
@@ -76,18 +76,18 @@ void listenSensors() {
     laserSensors[i].printLength();
     if (laserSensors[i].detetedObstacle()) {
       Serial.println("Obstacle Detected!");
-      SPSystem.setStatus(STOPPED);
-      SPSystem.printStatus();
+      detectSystem.setStatus(STOPPED);
+      detectSystem.printStatus();
     };
   }
 
   delay(2000);
-  SPSystem.setStatus(STOPPED);
-  SPSystem.printStatus();
+  detectSystem.setStatus(STOPPED);
+  detectSystem.printStatus();
 }
 
 void countDownCallback() {
   Serial.println("countdown finish");
-  SPSystem.setStatus(RUNNING);
-  SPSystem.printStatus();
+  detectSystem.setStatus(RUNNING);
+  detectSystem.printStatus();
 }
