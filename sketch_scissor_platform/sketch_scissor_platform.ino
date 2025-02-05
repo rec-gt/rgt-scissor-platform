@@ -24,7 +24,6 @@ const char* STATUS_STR[] = { "STOPPED", "RUNNING", "ALLOW_10S" };
 
 SystemStatus systemStatus = RUNNING;
 
-int buttonState = HIGH;
 
 // init timer
 const unsigned long TIMER_DURATION = 10 * 1000;
@@ -49,6 +48,9 @@ void setup() {
   handleChangeSystemStatus(RUNNING);
 
   // init msg
+  Serial.println(digitalRead(BUTTON_PIN));
+
+
   Serial.println("--- System Start ---");
   printSystemStatus();
 }
@@ -135,10 +137,7 @@ void listenSensors() {
 }
 
 void listenButton() {
-  // BUTTON_PIN default is powered (i.e., HIGH)
-  buttonState = digitalRead(BUTTON_PIN);
-
-  if (buttonState == LOW) {
+  if (digitalRead(BUTTON_PIN) == LOW) {
     Serial.println("Allow Running for 10s");
     startMillis = millis();
     handleChangeSystemStatus(ALLOW_10S);
