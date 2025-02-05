@@ -14,7 +14,7 @@ const int SWITCH_PIN = 12;
 
 int previousSwitchStatus = LOW;
 
-enum SystemStatus {
+enum SystemStatus { 
   STOPPED,
   RUNNING,
   ALLOW_10S,
