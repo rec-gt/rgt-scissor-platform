@@ -24,6 +24,7 @@ void setup() {
 
 void loop() {
   button.update();
+
   if (system1.getStatus() == RUNNING) {
     relay.on();
 
@@ -52,8 +53,6 @@ void loop() {
     speaker.off();
     countdownTimer.countdown(countDownCallback);
   }
-
-  delay(10);
 }
 
 void countDownCallback() {
