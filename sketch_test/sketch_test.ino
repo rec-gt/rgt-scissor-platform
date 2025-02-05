@@ -18,6 +18,8 @@ Light warningLight(8);
 
 Speaker speaker(10);
 
+CountdownTimer countdownTimerTmp(5);
+
 CountdownTimer countdownTimer(5);
 
 const int numLaserSensors = 10;
@@ -79,7 +81,7 @@ void listenSensors() {
       system1.printStatus();
     };
   }
-  
+
   delay(2000);
   system1.setStatus(STOPPED);
   system1.printStatus();
