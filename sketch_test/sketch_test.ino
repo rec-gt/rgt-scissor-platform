@@ -1,12 +1,12 @@
 #include "spSystem.h"
-#include "button.h"
+#include "button2.h"
 #include "relay.h"
 #include "light.h"
 #include "speaker.h"
 #include "countdown.h"
 #include "laserSensor.h"
-//asd
-ScissorPlatformSystem system1;
+
+ScissorPlatformSystem SPSystem;
 
 Button button(2);
 
@@ -17,8 +17,6 @@ Light powerLight(6);
 Light warningLight(8);
 
 Speaker speaker(10);
-
-CountdownTimer countdownTimerTmp(5);
 
 CountdownTimer countdownTimer(5);
 
@@ -40,32 +38,32 @@ void setup() {
   Serial.begin(9600);
 
   powerLight.on();
-  system1.setStatus(RUNNING);
-  system1.printStatus();
+  SPSystem.setStatus(RUNNING);
+  SPSystem.printStatus();
 }
 
 void loop() {
-  button.update();
+  button.listen();
 
-  if (system1.getStatus() == RUNNING) {
+  if (SPSystem.getStatus() == RUNNING) {
     relay.on();
     listenSensors();
   }
 
-  if (system1.getStatus() == STOPPED) {
+  if (SPSystem.getStatus() == STOPPED) {
     relay.off();
     warningLight.on();
     speaker.on();
 
     if (button.isPressed()) {
       Serial.println("10s Button Pressed");
-      system1.setStatus(ALLOW_10S);
-      system1.printStatus();
+      SPSystem.setStatus(ALLOW_10S);
+      SPSystem.printStatus();
       countdownTimer.setStart(millis());
     }
   }
 
-  if (system1.getStatus() == ALLOW_10S) {
+  if (SPSystem.getStatus() == ALLOW_10S) {
     relay.on();
     warningLight.off();
     speaker.off();
@@ -78,18 +76,18 @@ void listenSensors() {
     laserSensors[i].printLength();
     if (laserSensors[i].detetedObstacle()) {
       Serial.println("Obstacle Detected!");
-      system1.setStatus(STOPPED);
-      system1.printStatus();
+      SPSystem.setStatus(STOPPED);
+      SPSystem.printStatus();
     };
   }
 
   delay(2000);
-  system1.setStatus(STOPPED);
-  system1.printStatus();
+  SPSystem.setStatus(STOPPED);
+  SPSystem.printStatus();
 }
 
 void countDownCallback() {
   Serial.println("countdown finish");
-  system1.setStatus(RUNNING);
-  system1.printStatus();
+  SPSystem.setStatus(RUNNING);
+  SPSystem.printStatus();
 }
