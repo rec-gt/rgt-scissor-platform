@@ -75,6 +75,7 @@ void loop() {
 
 void listenSensors() {
   for (int i = 0; i < numLaserSensors; i++) {
+    laserSensors[i].printLength();
     if (laserSensors[i].detetedObstacle()) {
       Serial.println("Obstacle Detected!");
       system1.setStatus(STOPPED);

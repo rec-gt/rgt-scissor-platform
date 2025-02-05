@@ -13,6 +13,12 @@ public:
     pinMode(pin, INPUT);
   }
 
+  void printLength() {
+    int sensorValue = analogRead(pin);
+    float measuredDistance = sensorValue * 5.0 / 1023.0;
+    Serial.println(measuredDistance);
+  }
+
   bool detetedObstacle() {
     return false;
     // int sensorValue = analogRead(pin);
