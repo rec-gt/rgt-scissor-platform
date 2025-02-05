@@ -7,7 +7,8 @@
 
 ScissorPlatformSystem system1;
 Button button1(20);
-Relay relay1(4);
+Relay relay(4);
+Light powerLight(6);
 Light warningLight(8);
 Speaker speaker(10);
 CountdownTimer countdownTimer(5);
@@ -15,6 +16,8 @@ CountdownTimer countdownTimer(5);
 
 void setup() {
   Serial.begin(9600);
+
+  powerLight.on();
   system1.setStatus(RUNNING);
   system1.printStatus();
 }
@@ -22,7 +25,7 @@ void setup() {
 void loop() {
   button1.update();
   if (system1.getStatus() == RUNNING) {
-    relay1.on();
+    relay.on();
 
     // listenSensors();
     delay(2000);
@@ -31,7 +34,7 @@ void loop() {
   }
 
   if (system1.getStatus() == STOPPED) {
-    relay1.off();
+    relay.off();
     warningLight.on();
     speaker.on();
 
@@ -44,10 +47,9 @@ void loop() {
   }
 
   if (system1.getStatus() == ALLOW_10S) {
-    relay1.on();
+    relay.on();
     warningLight.off();
     speaker.off();
-
     countdownTimer.countdown(countDownCallback);
   }
 
