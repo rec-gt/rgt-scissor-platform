@@ -47,11 +47,7 @@ void loop() {
 
   if (system1.getStatus() == RUNNING) {
     relay.on();
-
     listenSensors();
-    delay(2000);
-    system1.setStatus(STOPPED);
-    system1.printStatus();
   }
 
   if (system1.getStatus() == STOPPED) {
@@ -80,8 +76,13 @@ void listenSensors() {
     if (laserSensors[i].detetedObstacle()) {
       Serial.println("Obstacle Detected!");
       system1.setStatus(STOPPED);
+      system1.printStatus();
     };
   }
+  
+  delay(2000);
+  system1.setStatus(STOPPED);
+  system1.printStatus();
 }
 
 void countDownCallback() {
