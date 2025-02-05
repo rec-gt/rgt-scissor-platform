@@ -1,5 +1,5 @@
 #include "spSystem.h"
-#include "button2.h"
+#include "button.h"
 #include "relay.h"
 #include "light.h"
 #include "speaker.h"
