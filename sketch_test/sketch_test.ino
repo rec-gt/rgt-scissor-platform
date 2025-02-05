@@ -38,6 +38,7 @@ void loop() {
     if (button1.isPressed()) {
       Serial.println("10s Button Pressed");
       system1.setStatus(ALLOW_10S);
+      system1.printStatus();
       countdownTimer.setStart(millis());
     }
   }
@@ -56,4 +57,5 @@ void loop() {
 void countDownCallback() {
   Serial.println("countdown finish");
   system1.setStatus(RUNNING);
+  system1.printStatus();
 }
