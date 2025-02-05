@@ -17,8 +17,4 @@ public:
   void off() {
     digitalWrite(this->pin, LOW);
   }
-
-  void print() {
-    Serial.println(digitalRead(this->pin));
-  }
 };
