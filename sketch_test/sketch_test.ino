@@ -10,7 +10,7 @@ Button button1(20);
 Relay relay1(4);
 Light warningLight(8);
 Speaker speaker(10);
-CountdownTimer countdownTimer(10);
+CountdownTimer countdownTimer(5);
 
 
 void setup() {
@@ -20,7 +20,7 @@ void setup() {
 }
 
 void loop() {
-
+  button1.update();
   if (system1.getStatus() == RUNNING) {
     relay1.on();
 
@@ -36,6 +36,7 @@ void loop() {
     speaker.on();
 
     if (button1.isPressed()) {
+      Serial.println("10s Button Pressed");
       system1.setStatus(ALLOW_10S);
       countdownTimer.setStart(millis());
     }
