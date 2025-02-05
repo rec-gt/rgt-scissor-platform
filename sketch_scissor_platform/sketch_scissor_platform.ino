@@ -1,24 +1,28 @@
 // laser sensors pins
-const int sensorPins[] = { A0, A1, A2, A3, A4, A5, A6, A7, A8, A9 };
-const int numSensors = 10;
+const int SENSOR_PINS[] = { A0, A1, A2, A3, A4, A5, A6, A7, A8, A9 };
+const int SENSORS_NUM = 10;
 
-const int buttonPin = 2;
-const int relayPin = 4;
-const int warningLightPin = 13;
-const int powerLightPin = 14;
-const int switchPin = 15;
+const float SENSOR_DISTANCE_BUFFER[] = { 100, 100, 100, 100, 100, 100, 100, 100, 100, 100 };
+const float BASE_DISTANCE = 500;
+
+const int BUTTON_PIN = 2;
+const int RELAY_PIN = 4;
+const int POWER_LIGHT_PIN = 6;
+const int WARNING_LIGHT_PIN = 8;
+const int SPEAKER_PIN = 10;
+const int SWITCH_PIN = 12;
 
 int previousSwitchStatus = LOW;
 
-enum Status {
+enum SystemStatus {
   STOPPED,
   RUNNING,
   ALLOW_10S,
 };
 
-const char* StatusStr[] = { "STOPPED", "RUNNING", "ALLOW_10S" };
+const char* STATUS_STR[] = { "STOPPED", "RUNNING", "ALLOW_10S" };
 
-Status systemStatus = RUNNING;
+SystemStatus systemStatus = RUNNING;
 
 int buttonState = HIGH;
 
@@ -32,21 +36,49 @@ void setup() {
   Serial.begin(9600);
 
   // init inputs
-  pinMode(buttonPin, INPUT);
+  pinMode(BUTTON_PIN, INPUT);
 
   // init outputs
-  pinMode(relayPin, OUTPUT);
-  pinMode(warningLightPin, OUTPUT);
-  pinMode(powerLightPin, OUTPUT);
+  pinMode(RELAY_PIN, OUTPUT);
+  pinMode(POWER_LIGHT_PIN, OUTPUT);
+  pinMode(WARNING_LIGHT_PIN, OUTPUT);
+  pinMode(SPEAKER_PIN, OUTPUT);
 
-  Serial.println(buttonState);
+  // init system
+  handlePowerLight();
+  handleChangeSystemStatus(RUNNING);
+
+  // init msg
   Serial.println("--- System Start ---");
   printSystemStatus();
 }
 
+void loop() {
+  if (systemStatus == RUNNING) {
+    handleRelay(true);
+    listenSensors();
+  }
+
+  if (systemStatus == STOPPED) {
+    handleRelay(true);
+    handleWarningLight(true);
+    handleSpeaker(true);
+    listenButton();
+  }
+
+  if (systemStatus == ALLOW_10S) {
+    handleRelay(false);
+    handleWarningLight(false);
+    handleSpeaker(false);
+    handleTimer();
+  }
+
+  delay(10);
+}
+
 void printSystemStatus() {
   Serial.print("System current status: ");
-  Serial.println(StatusStr[systemStatus]);
+  Serial.println(STATUS_STR[systemStatus]);
 }
 
 void printDistanceData(int i, float distance) {
@@ -57,67 +89,64 @@ void printDistanceData(int i, float distance) {
   Serial.println(" cm");
 }
 
-int thresholdDistance() {
-  // base 500mm, buffer 300mm
-  int base = 500;
-  int buffer = 300;
-  return base + buffer;
+float getThresholdDistance(float bufferDistance) {
+  return BASE_DISTANCE + bufferDistance;
 }
 
-void handleChangeStatus(Status status) {
+void handleChangeSystemStatus(SystemStatus status) {
   systemStatus = status;
 
   Serial.print("System switch to '");
-  Serial.print(StatusStr[status]);
+  Serial.print(STATUS_STR[status]);
   Serial.println("' status");
 }
 
 void handlePowerLight() {
-  digitalWrite(powerLightPin, HIGH);
-}
-
-void handleWarningLight(bool toggle) {
-  digitalWrite(warningLightPin, toggle ? HIGH : LOW);
+  digitalWrite(POWER_LIGHT_PIN, HIGH);
 }
 
 void handleRelay(bool toggle) {
-  Serial.println(digitalRead(relayPin));
-  // set relay to true means give 5v to it, making it NO (relay disconnected)
-  // set relay to false means give 0v to it, making it NC (relay connected)
-  digitalWrite(relayPin, toggle ? HIGH : LOW);
+  // Relay default NO
+  // set relay to true means give 5v to it, making the relay "connected"
+  // set relay to false means give 0v to it, making the relay "disconnected"
+  digitalWrite(RELAY_PIN, toggle ? HIGH : LOW);
+}
+
+void handleWarningLight(int toggle) {
+  digitalWrite(WARNING_LIGHT_PIN, toggle ? HIGH : LOW);
+}
+
+void handleSpeaker(int toggle) {
+  digitalWrite(SPEAKER_PIN, toggle ? HIGH : LOW);
 }
 
 void listenSensors() {
-  // for (int i = 0; i < numSensors; i++) {
-  //   int sensorValue = analogRead(sensorPins[i]);  // Read the analog sensor value
-  //   float distance = sensorValue * 5.0 / 1023.0;  // Convert sensor value to distance (assuming a linear relationship)
+  // for (int i = 0; i < SENSORS_NUM; i++) {
+  //   int sensorValue = analogRead(SENSOR_PINS[i]);
+  //   float measuredDistance = sensorValue * 5.0 / 1023.0;
 
-  //   if (distance > thresholdDistance()) {
-  //     handleChangeStatus(STOPPED);
-  //     handleWarningLight(true);
+  //   if (measuredDistance > getThresholdDistance(SENSOR_DISTANCE_BUFFER[i])) {
+  //     handleChangeSystemStatus(STOPPED);
   //   }
   // }
-
+  delay(3000);
   Serial.println("Obstacle detected!");
-  handleChangeStatus(STOPPED);
+  handleChangeSystemStatus(STOPPED);
 }
 
 void listenButton() {
-  // buttonPin default is powered (i.e., HIGH)
-  buttonState = digitalRead(buttonPin);
+  // BUTTON_PIN default is powered (i.e., HIGH)
+  buttonState = digitalRead(BUTTON_PIN);
 
-  if (buttonState == LOW) {  // once button is pressed
-    // handleWarningLight(false);
+  if (buttonState == LOW) {
     Serial.println("Allow Running for 10s");
-
-    // set current time for countdown
     startMillis = millis();
-    handleChangeStatus(ALLOW_10S);
+    handleChangeSystemStatus(ALLOW_10S);
   }
 }
 
 void listenSwitch() {
-  int currentSwitchState = digitalRead(switchPin);  // Read the current state of the switch
+  int currentSwitchState = digitalRead(SWITCH_PIN);  // Read the current state of the switch
 
   if (currentSwitchState != previousSwitchStatus) {
     if (currentSwitchState == HIGH) {
@@ -141,28 +170,6 @@ void handleTimer() {
 
   if (currentMillis - startMillis >= TIMER_DURATION) {
     remainingTime = TIMER_DURATION / 1000;
-    handleChangeStatus(RUNNING);
+    handleChangeSystemStatus(RUNNING);
   }
-}
-
-void loop() {
-  handlePowerLight();  // init power light, always on
-
-  if (systemStatus == RUNNING) {
-    handleRelay(false);
-    listenSensors();
-  }
-
-  if (systemStatus == STOPPED) {
-    handleRelay(true);
-    listenButton();
-  }
-
-  if (systemStatus == ALLOW_10S) {
-    handleRelay(false);
-    handleTimer();
-  }
-
-  delay(10);
-  //
 }
