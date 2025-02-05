@@ -6,7 +6,7 @@
 #include "countdown.h"
 
 ScissorPlatformSystem system1;
-Button button1(20);
+Button button(2);
 Relay relay(4);
 Light powerLight(6);
 Light warningLight(8);
@@ -23,7 +23,7 @@ void setup() {
 }
 
 void loop() {
-  button1.update();
+  button.update();
   if (system1.getStatus() == RUNNING) {
     relay.on();
 
@@ -38,7 +38,7 @@ void loop() {
     warningLight.on();
     speaker.on();
 
-    if (button1.isPressed()) {
+    if (button.isPressed()) {
       Serial.println("10s Button Pressed");
       system1.setStatus(ALLOW_10S);
       system1.printStatus();
