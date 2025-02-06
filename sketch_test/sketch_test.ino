@@ -18,7 +18,7 @@ Light warningLight(8);
 
 Speaker speaker(10);
 
-CountdownTimer countdownTimer(5);
+CountdownTimer countdownTimer(10);
 
 const int numLaserSensors = 10;
 LaserSensor laserSensors[numLaserSensors] = {
@@ -37,12 +37,13 @@ LaserSensor laserSensors[numLaserSensors] = {
 void setup() {
   Serial.begin(9600);
 
-  powerLight.on();
   detectSystem.setStatus(RUNNING);
   detectSystem.printStatus();
 }
 
 void loop() {
+  powerLight.on();
+
   button.listen();
 
   if (detectSystem.getStatus() == RUNNING) {
