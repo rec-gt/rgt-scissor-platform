@@ -82,7 +82,7 @@ void listenSensors() {
     };
   }
 
-  delay(2000);
+  delay(3000);
   detectSystem.setStatus(STOPPED);
   detectSystem.printStatus();
 }
