@@ -23,6 +23,6 @@ public:
     int sensorValue = analogRead(this->pin);
     float measuredDistance = sensorValue * 5.0 / 1023.0;
     return measuredDistance >= 4.5;
-    // return false;…
+    // return false;
   }
 };

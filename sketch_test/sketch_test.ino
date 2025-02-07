@@ -22,18 +22,17 @@ Speaker speaker(10);
 
 CountdownTimer countdownTimer(10);
 
-const int numLaserSensors = 10;
-LaserSensor laserSensors[numLaserSensors] = {
+LaserSensor laserSensors[] = {
   LaserSensor(A0, 0),
-  LaserSensor(A1, 0),
-  LaserSensor(A2, 0),
-  LaserSensor(A3, 0),
-  LaserSensor(A4, 0),
-  LaserSensor(A5, 0),
-  LaserSensor(A6, 0),
-  LaserSensor(A7, 0),
-  LaserSensor(A8, 0),
-  LaserSensor(A9, 0),
+  // LaserSensor(A1, 0),
+  // LaserSensor(A2, 0),
+  // LaserSensor(A3, 0),
+  // LaserSensor(A4, 0),
+  // LaserSensor(A5, 0),
+  // LaserSensor(A6, 0),
+  // LaserSensor(A7, 0),
+  // LaserSensor(A8, 0),
+  // LaserSensor(A9, 0),
 };
 
 void setup() {
@@ -77,6 +76,7 @@ void loop() {
 }
 
 void listenSensors() {
+  int numLaserSensors = sizeof(laserSensors) / sizeof(laserSensors[0]);
   for (int i = 0; i < numLaserSensors; i++) {
     laserSensors[i].printLength();
     if (laserSensors[i].detetedObstacle()) {
