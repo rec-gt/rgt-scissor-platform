@@ -2,6 +2,7 @@
 #include "button.h"
 #include "relay.h"
 #include "light.h"
+#include "warningLight.h"
 #include "speaker.h"
 #include "countdown.h"
 #include "laserSensor.h"
@@ -14,7 +15,8 @@ Relay relay(4);
 
 Light powerLight(6);
 
-Light warningLight(8);
+// Light warningLight(8);
+WarningLight warningLight(8);
 
 Speaker speaker(10);
 
@@ -48,6 +50,8 @@ void loop() {
 
   if (detectSystem.getStatus() == RUNNING) {
     relay.on();
+    warningLight.off();
+    speaker.off();
     listenSensors();
   }
 
@@ -79,12 +83,13 @@ void listenSensors() {
       Serial.println("Obstacle Detected!");
       detectSystem.setStatus(STOPPED);
       detectSystem.printStatus();
+      break;
     };
   }
 
-  delay(3000);
-  detectSystem.setStatus(STOPPED);
-  detectSystem.printStatus();
+  // delay(3000);
+  // detectSystem.setStatus(STOPPED);
+  // detectSystem.printStatus();
 }
 
 void countDownCallback() {

@@ -20,9 +20,9 @@ public:
   }
 
   bool detetedObstacle() {
-    return false;
-    // int sensorValue = analogRead(this->pin);
-    // float measuredDistance = sensorValue * 5.0 / 1023.0;
-    // return measuredDistance >= this->baseDistance + this->bufferDistance;
+    int sensorValue = analogRead(this->pin);
+    float measuredDistance = sensorValue * 5.0 / 1023.0;
+    return measuredDistance >= 4.5;
+    // return false;…
   }
 };
