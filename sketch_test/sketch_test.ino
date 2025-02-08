@@ -85,8 +85,10 @@ void loop() {
 void listenSensors() {
   int numLaserSensors = sizeof(laserSensors) / sizeof(laserSensors[0]);
   for (int i = 0; i < numLaserSensors; i++) {
+    bool detected = laserSensors[i].detectObstacle(bufferSwitch.isOn());
     laserSensors[i].printLength();
-    if (laserSensors[i].detectedObstacle()) {
+
+    if (detected) {
       Serial.println("Obstacle Detected!");
       detectSystem.setStatus(STOPPED);
       detectSystem.printStatus();

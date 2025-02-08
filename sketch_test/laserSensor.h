@@ -5,6 +5,7 @@ private:
   byte pin;
   const float baseDistance = 500;
   float bufferDistance;
+  float measuredDistance;
 
 public:
   LaserSensor(byte pin, float bufferDistance) {
@@ -14,20 +15,18 @@ public:
   }
 
   void printLength() {
-    int sensorValue = analogRead(this->pin);
-    float measuredDistance = sensorValue * 5.0 / 1023.0;
-    Serial.println(measuredDistance);
+    Serial.println(this->measuredDistance);
   }
 
-  bool detectedObstacle(bool addBuffer = false) {
-    int sensorValue = analogRead(this->pin);
-    float measuredDistance = sensorValue * 5.0 / 1023.0;
-    
+  bool detectObstacle(bool addBuffer = false) {
+    int currReading = analogRead(this->pin);
+
     if (addBuffer) {
-      measuredDistance += this->bufferDistance;
+      this->measuredDistance = currReading + this->bufferDistance;
+    } else {
+      this->measuredDistance = currReading;
     }
 
-    return measuredDistance >= 4.5;
-    // return false;
+    return this->measuredDistance >= 950;
   }
 };
