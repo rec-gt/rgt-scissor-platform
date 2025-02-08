@@ -26,6 +26,11 @@ public:
     }
   }
 
+  // void on() {
+  //   // 非模擬閃爍
+  //   digitalWrite(this->pin, this->lastStatus);
+  // }
+
   void off() {
     digitalWrite(this->pin, LOW);
   }
