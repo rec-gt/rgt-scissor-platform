@@ -10,7 +10,7 @@
 
 DetectSystem detectSystem;
 
-Button button(2);
+Button pressButton(2);
 
 Relay relay(4);
 
@@ -26,7 +26,7 @@ BufferSwitch bufferSwitch(12);
 CountdownTimer countdownTimer(10);
 
 LaserSensor laserSensors[] = {
-  LaserSensor(A0, 523),
+  LaserSensor(A0, 200),
   // LaserSensor(A1, 0),
   // LaserSensor(A2, 0),
   // LaserSensor(A3, 0),
@@ -40,7 +40,6 @@ LaserSensor laserSensors[] = {
 
 void setup() {
   Serial.begin(9600);
-
   detectSystem.setStatus(RUNNING);
   detectSystem.printStatus();
 }
@@ -48,17 +47,11 @@ void setup() {
 void loop() {
   powerLight.on();
 
-  button.listen();
+  pressButton.listen();
 
   bufferSwitch.listen();
 
-  if (bufferSwitch.isOn()) {
-    setSensorsBuffer(true);
-    Serial.println("Buffer Switch on");
-  } else {
-    setSensorsBuffer(false);
-    Serial.println("Buffer Switch off");
-  }
+  setSensorsBuffer(bufferSwitch.isOn());
 
   if (detectSystem.getStatus() == RUNNING) {
     relay.on();
@@ -72,7 +65,7 @@ void loop() {
     warningLight.on();
     speaker.on();
 
-    if (button.isPressed()) {
+    if (pressButton.isPressed()) {
       Serial.println("10s Button Pressed");
       detectSystem.setStatus(ALLOW_10S);
       detectSystem.printStatus();
@@ -101,7 +94,6 @@ void listenSensors() {
   int numLaserSensors = sizeof(laserSensors) / sizeof(laserSensors[0]);
   for (int i = 0; i < numLaserSensors; i++) {
     bool detected = laserSensors[i].detectObstacle();
-    // laserSensors[i].print().byVoltage();
 
     if (detected) {
       Serial.println("Obstacle Detected!");
