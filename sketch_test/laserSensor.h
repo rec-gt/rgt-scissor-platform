@@ -21,13 +21,11 @@ public:
   bool detectObstacle() {
     int currReading = analogRead(this->pin);
 
-    if (this->addBuffer) {
-      this->measuredDistance = currReading + this->bufferDistance;
-    } else {
-      this->measuredDistance = currReading;
-    }
+    float thresholdDistance = this->baseDistance + this->addBuffer ? this->bufferDistance : 0;
+    
+    Serial.println(thresholdDistance);
 
-    return this->measuredDistance >= 950;
+    return this->measuredDistance >= 1023;
   }
 
   LaserSensor& print() {
