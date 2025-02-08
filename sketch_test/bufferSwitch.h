@@ -6,16 +6,14 @@ private:
   byte status;
   byte previousStatus;
 public:
-  BufferSwitch(byte pin) {
-    this->pin = pin;
+  BufferSwitch(byte pin)
+    : pin(pin) {
     pinMode(this->pin, INPUT);
   }
 
   void listen() {
-    byte currentStatus = digitalRead(this->pin);
-    if (currentStatus != this->previousStatus) {
-      this->status = currentStatus;
-    }
+    this->status = digitalRead(this->pin);
+    // Serial.println(this->status);
   }
 
   bool isOn() {

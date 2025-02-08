@@ -26,12 +26,17 @@ public:
     }
   }
 
+  void off() {
+    this->lastStatus = LOW;
+    digitalWrite(this->pin, LOW);
+  }
+
   // void on() {
   //   // 非模擬閃爍
   //   digitalWrite(this->pin, this->lastStatus);
   // }
 
-  void off() {
-    digitalWrite(this->pin, LOW);
-  }
+  // void off() {
+  //   digitalWrite(this->pin, LOW);
+  // }
 };

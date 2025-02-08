@@ -13,13 +13,16 @@ public:
     pinMode(this->pin, INPUT);
   }
 
-  LaserSensor& printLength() {
-    Serial.println(this->measuredDistance);
+  LaserSensor& print() {
     return *this;
   }
 
-  void toV() {
+  void byVoltage() {
     Serial.println(this->measuredDistance / 1023 * 5);
+  }
+
+  void byValue() {
+    Serial.println(this->measuredDistance);
   }
 
   bool detectObstacle(bool addBuffer = false) {
