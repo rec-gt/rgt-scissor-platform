@@ -6,6 +6,7 @@
 #include "speaker.h"
 #include "countdown.h"
 #include "laserSensor.h"
+#include "bufferSwitch.h"
 
 DetectSystem detectSystem;
 
@@ -20,10 +21,12 @@ WarningLight warningLight(8);
 
 Speaker speaker(10);
 
+BufferSwitch bufferSwitch(12);
+
 CountdownTimer countdownTimer(10);
 
 LaserSensor laserSensors[] = {
-  LaserSensor(A0, 0),
+  LaserSensor(A0, 0.1),
   // LaserSensor(A1, 0),
   // LaserSensor(A2, 0),
   // LaserSensor(A3, 0),
@@ -46,6 +49,8 @@ void loop() {
   powerLight.on();
 
   button.listen();
+
+  bufferSwitch.listen();
 
   if (detectSystem.getStatus() == RUNNING) {
     relay.on();
@@ -73,23 +78,21 @@ void loop() {
     speaker.off();
     countdownTimer.countdown(countDownCallback);
   }
+
+  delay(500);
 }
 
 void listenSensors() {
   int numLaserSensors = sizeof(laserSensors) / sizeof(laserSensors[0]);
   for (int i = 0; i < numLaserSensors; i++) {
     laserSensors[i].printLength();
-    if (laserSensors[i].detetedObstacle()) {
+    if (laserSensors[i].detectedObstacle()) {
       Serial.println("Obstacle Detected!");
       detectSystem.setStatus(STOPPED);
       detectSystem.printStatus();
       break;
     };
   }
-
-  // delay(3000);
-  // detectSystem.setStatus(STOPPED);
-  // detectSystem.printStatus();
 }
 
 void countDownCallback() {

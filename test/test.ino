@@ -1,10 +1,10 @@
-byte BUTTON_PIN = 12;
+byte SWITCH_PIN = 22;
 
 void setup() {
   Serial.begin(9600);
-  pinMode(BUTTON_PIN, INPUT);
+  pinMode(SWITCH_PIN, INPUT);
 }
 
 void loop() {
-  Serial.println(digitalRead(BUTTON_PIN));
+  Serial.println(digitalRead(SWITCH_PIN));
 }

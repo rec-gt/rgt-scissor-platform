@@ -19,9 +19,14 @@ public:
     Serial.println(measuredDistance);
   }
 
-  bool detetedObstacle() {
+  bool detectedObstacle(bool addBuffer = false) {
     int sensorValue = analogRead(this->pin);
     float measuredDistance = sensorValue * 5.0 / 1023.0;
+    
+    if (addBuffer) {
+      measuredDistance += this->bufferDistance;
+    }
+
     return measuredDistance >= 4.5;
     // return false;
   }
