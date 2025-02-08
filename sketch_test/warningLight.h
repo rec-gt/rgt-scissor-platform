@@ -7,10 +7,8 @@ private:
   unsigned long lastMillis;
 
 public:
-  WarningLight(byte pin) {
-    this->pin = pin;
-    this->lastStatus = LOW;
-    this->lastMillis = millis();
+  WarningLight(byte pin)
+    : pin(pin), lastStatus(LOW), lastMillis(millis()) {
     pinMode(this->pin, OUTPUT);
   }
 

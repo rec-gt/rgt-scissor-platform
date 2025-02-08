@@ -5,8 +5,8 @@ private:
   byte pin;
 
 public:
-  Light(byte pin) {
-    this->pin = pin;
+  Light(byte pin)
+    : pin(pin) {
     pinMode(this->pin, OUTPUT);
   }
 

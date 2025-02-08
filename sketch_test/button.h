@@ -5,8 +5,8 @@ private:
   byte pin;
   byte status;
 public:
-  Button(byte pin) {
-    this->pin = pin;
+  Button(byte pin)
+    : pin(pin) {
     pinMode(this->pin, INPUT);
   }
 

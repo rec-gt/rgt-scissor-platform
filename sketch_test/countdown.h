@@ -7,8 +7,8 @@ private:
   unsigned long duration = 10 * 1000;
 
 public:
-  CountdownTimer(unsigned long duration) {
-    this->duration = duration * 1000;
+  CountdownTimer(unsigned long duration)
+    : duration(duration * 1000) {
   }
 
   void setStart(unsigned long startMillis) {

@@ -8,14 +8,18 @@ private:
   float measuredDistance;
 
 public:
-  LaserSensor(byte pin, float bufferDistance) {
-    this->pin = pin;
-    this->bufferDistance = bufferDistance;
+  LaserSensor(byte pin, float bufferDistance)
+    : pin(pin), bufferDistance(bufferDistance) {
     pinMode(this->pin, INPUT);
   }
 
-  void printLength() {
+  LaserSensor& printLength() {
     Serial.println(this->measuredDistance);
+    return *this;
+  }
+
+  void toV() {
+    Serial.println(this->measuredDistance / 1023 * 5);
   }
 
   bool detectObstacle(bool addBuffer = false) {

@@ -5,8 +5,8 @@ private:
   byte pin;
 
 public:
-  Speaker(byte pin) {
-    this->pin = pin;
+  Speaker(byte pin)
+    : pin(pin) {
     pinMode(this->pin, OUTPUT);
   }
 

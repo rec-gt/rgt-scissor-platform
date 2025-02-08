@@ -7,8 +7,8 @@ private:
   byte pin;
 
 public:
-  Relay(byte pin) {
-    this->pin = pin;
+  Relay(byte pin)
+    : pin(pin) {
     pinMode(this->pin, OUTPUT);
   }
 

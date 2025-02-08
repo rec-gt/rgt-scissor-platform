@@ -26,7 +26,7 @@ BufferSwitch bufferSwitch(12);
 CountdownTimer countdownTimer(10);
 
 LaserSensor laserSensors[] = {
-  LaserSensor(A0, 0.1),
+  LaserSensor(A0, 100),
   // LaserSensor(A1, 0),
   // LaserSensor(A2, 0),
   // LaserSensor(A3, 0),
@@ -79,14 +79,14 @@ void loop() {
     countdownTimer.countdown(countDownCallback);
   }
 
-  delay(500);
+  delay(100);
 }
 
 void listenSensors() {
   int numLaserSensors = sizeof(laserSensors) / sizeof(laserSensors[0]);
   for (int i = 0; i < numLaserSensors; i++) {
     bool detected = laserSensors[i].detectObstacle(bufferSwitch.isOn());
-    laserSensors[i].printLength();
+    laserSensors[i].printLength().toV();
 
     if (detected) {
       Serial.println("Obstacle Detected!");
