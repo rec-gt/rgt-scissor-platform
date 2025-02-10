@@ -10,7 +10,7 @@
 
 DetectSystem detectSystem;
 
-Button pressButton(2);
+PressButton pressButton(2);
 
 Relay relay(4);
 
