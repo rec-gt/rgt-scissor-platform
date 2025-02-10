@@ -13,6 +13,7 @@ public:
 
   void listen() {
     this->status = digitalRead(this->pin);
+    // Serial.println(this->status);
   }
 
   bool isOn() {

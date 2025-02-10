@@ -23,7 +23,7 @@ public:
 
     float thresholdDistance = this->baseDistance + (this->addBuffer ? this->bufferDistance : 0);
 
-    Serial.println(thresholdDistance);
+    // Serial.println(thresholdDistance);
 
     return this->measuredDistance >= 600;
   }
