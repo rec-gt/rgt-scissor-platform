@@ -36,7 +36,7 @@ public:
     float threshold = this->baseThreshold + (this->needBuffer ? this->bufferThreshold : 0);
 
     // Serial.println(reading);
-    Serial.println(this->measuredDistance);
+    // Serial.println(this->measuredDistance);
     return this->measuredDistance <= threshold;
   }
 

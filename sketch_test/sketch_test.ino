@@ -15,12 +15,12 @@ Relay relay(4);
 Light powerLight(6);
 WarningLight warningLight(8);
 Speaker speaker(10);
-BufferSwitch bufferSwitch(12);
+BufferSwitch bufferSwitch(12);  // OK
 
 CountdownTimer countdownTimer(10);
 
 LaserSensor laserSensors[] = {
-  LaserSensor(A0, -200), // +ve: easy to stop, -ve: not easy to stop 
+  LaserSensor(A0, -200),  // +ve: easy to stop, -ve: not easy to stop
   // LaserSensor(A1, 0),
   // LaserSensor(A2, 0),
   // LaserSensor(A3, 0),
@@ -91,8 +91,8 @@ void listenSensors() {
 
     if (detected) {
       Serial.println("Obstacle Detected!");
-      // detectSystem.setStatus(STOPPED);
-      // detectSystem.printStatus();
+      detectSystem.setStatus(STOPPED);
+      detectSystem.printStatus();
       break;
     };
   }
