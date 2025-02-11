@@ -2,7 +2,7 @@
 #include "pressButton.h"
 #include "relay.h"
 #include "light.h"
-#include "warningLight.h"
+// #include "warningLight.h"
 #include "speaker.h"
 #include "countdown.h"
 #include "laserSensor.h"
@@ -13,7 +13,8 @@ DetectSystem detectSystem;
 PressButton pressButton(2);
 Relay relay(4);
 Light powerLight(6);
-WarningLight warningLight(8);
+Light warningLight(8);
+// WarningLight warningLight(8);
 Speaker speaker(10);
 BufferSwitch bufferSwitch(12);  // OK
 
@@ -40,9 +41,7 @@ void setup() {
 
 void loop() {
   powerLight.on();
-
   pressButton.listen();
-
   bufferSwitch.listen();
 
   setSensorsBuffer(bufferSwitch.isOn());
@@ -58,6 +57,12 @@ void loop() {
     relay.cut();
     warningLight.on();
     speaker.on();
+
+    // in-case the detection is determined as "PASS"
+    // if (quickRecovery.success()) {
+    //   detectSystem.setStatus(RUNNING);
+    //   detectSystem.printStatus();
+    // }
 
     if (pressButton.isPressed()) {
       Serial.println("10s Button Pressed");

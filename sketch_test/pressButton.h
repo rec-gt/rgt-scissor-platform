@@ -1,26 +1,33 @@
-#include "Arduino.h"
+  #include "Arduino.h"
 
-class PressButton {
-private:
-  byte pin;
-  byte status;
-public:
-  PressButton(byte pin)
-    : pin(pin) {
-    pinMode(this->pin, INPUT);
-  }
+  class PressButton {
+  private:
+    byte pin;
+    byte status;
+    byte lastStatus;
+    byte lastMillis;
+  public:
+    PressButton(byte pin)
+      : pin(pin) {
+      pinMode(this->pin, INPUT);
+    }
 
-  void listen() {                           // GPIO design, using +/- only
-    this->status = digitalRead(this->pin);  // in input mode, pin output is 5V
-    digitalWrite(this->pin, this->status);  // write the 5V to pin at the same time, if not GND, the pin keep receive 5V
-  }
+    void listen() {
+      this->status = digitalRead(this->pin);
+    }
 
-  // void listen() {  // using default button (-/+/S)
-  //   this->status = digitalRead(this->pin);
-  //   // Serial.println(this->status);
-  // }
+    void debounceListen() {
+      byte reading = digitalRead(this->pin);
+      if (reading != this->lastStatus) {
+        this->lastMillis = millis();
+      } else {
+        if (millis() - this->lastMillis > 100) {
+          this->status = this->lastStatus = reading;
+        }
+      }
+    }
 
-  bool isPressed() {
-    return this->status == LOW;  // once pressed (i.e., GND), the pin become 0V
-  }
-};
+    bool isPressed() {
+      return this->status == LOW;  // once pressed (i.e., GND), the pin become 0V
+    }
+  };
