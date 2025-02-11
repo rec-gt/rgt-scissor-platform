@@ -30,7 +30,7 @@ public:
   bool detectObstacle() {
     float reading = analogRead(this->pin);
     this->measuredDistance = this->calculateDistance(reading);
-
+    Serial.println(this->measuredDistance);
     float threshold = this->baseThreshold + (this->needBuffer ? this->bufferThreshold : 0);
 
     return this->measuredDistance <= threshold;

@@ -89,12 +89,12 @@ void listenSensors() {
   for (int i = 0; i < numLaserSensors; i++) {
     bool detected = laserSensors[i].detectObstacle();
 
-    // if (detected) {
-    //   Serial.println("Obstacle Detected!");
-    //   detectSystem.setStatus(STOPPED);
-    //   detectSystem.printStatus();
-    //   break;
-    // };
+    if (detected) {
+      Serial.println("Obstacle Detected!");
+      detectSystem.setStatus(STOPPED);
+      detectSystem.printStatus();
+      break;
+    };
   }
 }
 
