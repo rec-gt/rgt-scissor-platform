@@ -29,6 +29,7 @@ public:
 
   bool detectObstacle() {
     float reading = analogRead(this->pin);
+    // analogWrite(this->pin, reading);
 
     this->measuredDistance = this->calculateDistance(reading);
 

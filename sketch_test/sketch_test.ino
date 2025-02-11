@@ -11,22 +11,16 @@
 DetectSystem detectSystem;
 
 PressButton pressButton(2);
-
 Relay relay(4);
-
 Light powerLight(6);
-
-// Light warningLight(8);
 WarningLight warningLight(8);
-
 Speaker speaker(10);
-
 BufferSwitch bufferSwitch(12);
 
 CountdownTimer countdownTimer(10);
 
 LaserSensor laserSensors[] = {
-  LaserSensor(A0, -200),
+  LaserSensor(A0, -200), // +ve: easy to stop, -ve: not easy to stop 
   // LaserSensor(A1, 0),
   // LaserSensor(A2, 0),
   // LaserSensor(A3, 0),
