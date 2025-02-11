@@ -48,14 +48,14 @@ void loop() {
   setSensorsBuffer(bufferSwitch.isOn());
 
   if (detectSystem.getStatus() == RUNNING) {
-    relay.on();
+    relay.connect();
     warningLight.off();
     speaker.off();
     listenSensors();
   }
 
   if (detectSystem.getStatus() == STOPPED) {
-    relay.off();
+    relay.cut();
     warningLight.on();
     speaker.on();
 
@@ -68,7 +68,7 @@ void loop() {
   }
 
   if (detectSystem.getStatus() == ALLOW_10S) {
-    relay.on();
+    relay.connect();
     warningLight.off();
     speaker.off();
     countdownTimer.countdown(countDownCallback);

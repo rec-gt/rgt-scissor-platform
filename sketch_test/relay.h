@@ -1,7 +1,6 @@
 #include "Arduino.h"
 
-
-
+// Relay default is LOW, and is NC, LOW=NC, HIGH=NO
 class Relay {
 private:
   byte pin;
@@ -12,15 +11,17 @@ public:
     pinMode(this->pin, OUTPUT);
   }
 
-  void on() {
-    digitalWrite(this->pin, HIGH);
-  }
-
-  void off() {
+  void connect() {
+    // NC
+    // COM -------|
+    // NO --------|
     digitalWrite(this->pin, LOW);
   }
 
-  void print() {
-    Serial.println(digitalRead(this->pin));
+  void cut() {
+    // NC --------|
+    // COM -------|
+    // NO
+    digitalWrite(this->pin, HIGH);
   }
 };
