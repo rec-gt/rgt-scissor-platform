@@ -3,29 +3,40 @@
 class LaserSensor {
 private:
   byte pin;
-  const float baseDistance = 500;
-  float bufferDistance;
+  const float baseThreshold = 500;
+  float bufferThreshold;
   float measuredDistance;
-  bool addBuffer;
+  bool needBuffer;
+
+  float calculateDistance(float reading) {
+    float min_factor = 192;
+    float max_factor = 965;
+    float min_sensor = 0;
+    float max_sensor = 2000;
+
+    return ((reading - max_factor) / (min_factor - max_factor)) * (min_sensor - max_sensor) + max_sensor;
+  }
 
 public:
-  LaserSensor(byte pin, float bufferDistance)
-    : pin(pin), bufferDistance(bufferDistance), addBuffer(false) {
+  LaserSensor(byte pin, float bufferThreshold)
+    : pin(pin), bufferThreshold(bufferThreshold), needBuffer(false) {
     pinMode(this->pin, INPUT);
   }
 
-  void setAddBuffer(bool toggle) {
-    this->addBuffer = toggle;
+  void setBuffer(bool toggle) {
+    this->needBuffer = toggle;
   }
 
   bool detectObstacle() {
-    this->measuredDistance = analogRead(this->pin);
+    float reading = analogRead(this->pin);
 
-    float thresholdDistance = this->baseDistance + (this->addBuffer ? this->bufferDistance : 0);
+    this->measuredDistance = this->calculateDistance(reading);
 
-    // Serial.println(thresholdDistance);
+    float threshold = this->baseThreshold + (this->needBuffer ? this->bufferThreshold : 0);
 
-    return this->measuredDistance >= 600;
+    // Serial.println(reading);
+    Serial.println(this->measuredDistance);
+    return this->measuredDistance <= threshold;
   }
 
   LaserSensor& print() {
@@ -38,5 +49,9 @@ public:
 
   void byValue() {
     Serial.println(this->measuredDistance);
+  }
+
+  float getDistance() {
+    return this->measuredDistance;
   }
 };

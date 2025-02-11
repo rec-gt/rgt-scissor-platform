@@ -1,5 +1,5 @@
 #include "detectSystem.h"
-#include "button.h"
+#include "pressButton.h"
 #include "relay.h"
 #include "light.h"
 #include "warningLight.h"
@@ -26,7 +26,7 @@ BufferSwitch bufferSwitch(12);
 CountdownTimer countdownTimer(10);
 
 LaserSensor laserSensors[] = {
-  LaserSensor(A0, 200),
+  LaserSensor(A0, -200),
   // LaserSensor(A1, 0),
   // LaserSensor(A2, 0),
   // LaserSensor(A3, 0),
@@ -86,7 +86,7 @@ void loop() {
 void setSensorsBuffer(bool toggle) {
   int numLaserSensors = sizeof(laserSensors) / sizeof(laserSensors[0]);
   for (int i = 0; i < numLaserSensors; i++) {
-    laserSensors[i].setAddBuffer(toggle);
+    laserSensors[i].setBuffer(toggle);
   }
 }
 
@@ -97,8 +97,8 @@ void listenSensors() {
 
     if (detected) {
       Serial.println("Obstacle Detected!");
-      detectSystem.setStatus(STOPPED);
-      detectSystem.printStatus();
+      // detectSystem.setStatus(STOPPED);
+      // detectSystem.printStatus();
       break;
     };
   }
