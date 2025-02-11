@@ -13,7 +13,6 @@ public:
   void listen() {                           // GPIO design, using +/- only
     this->status = digitalRead(this->pin);  // in input mode, pin output is 5V
     digitalWrite(this->pin, this->status);  // write the 5V to pin at the same time, if not GND, the pin keep receive 5V
-    Serial.println(this->status);
   }
 
   // void listen() {  // using default button (-/+/S)
