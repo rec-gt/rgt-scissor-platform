@@ -19,7 +19,7 @@ public:
     byte reading = digitalRead(this->pin);
 
     if (reading == HIGH) {
-      if ((millis() - this->lastMillis) > 1050) {
+      if ((millis() - this->lastMillis) > 1000) {
         this->state = reading;
       }
     } else {

@@ -92,9 +92,10 @@ void setSensorsBuffer(bool toggle) {
 void listenSensors() {
   int numLaserSensors = sizeof(laserSensors) / sizeof(laserSensors[0]);
   for (int i = 0; i < numLaserSensors; i++) {
-    bool detected = laserSensors[i].detectObstacle();
+    laserSensors[i].debounceListen();
     laserSensors[i].print().byValue();
-    if (detected) {
+
+    if (laserSensors[i].isDetected()) {
       Serial.println("Obstacle Detected!");
       detectSystem.setStatus(STOPPED);
       detectSystem.printStatus();

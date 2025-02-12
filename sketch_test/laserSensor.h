@@ -8,6 +8,10 @@ private:
   float measuredDistance;
   bool needBuffer;
 
+  // for debounce
+  unsigned long lastMillis;
+  bool detected = false;
+
   float calculateDistance(float reading) {
     float min_factor = 192;
     float max_factor = 965;
@@ -27,12 +31,33 @@ public:
     this->needBuffer = toggle;
   }
 
-  bool detectObstacle() {
+  void normalListen() {
     float reading = analogRead(this->pin);
     this->measuredDistance = this->calculateDistance(reading);
     float threshold = this->baseThreshold + (this->needBuffer ? this->bufferThreshold : 0);
 
-    return this->measuredDistance <= threshold;
+    this->detected = this->measuredDistance <= threshold;
+  }
+
+  void debounceListen() {
+    float reading = analogRead(this->pin);
+    this->measuredDistance = this->calculateDistance(reading);
+    float threshold = this->baseThreshold + (this->needBuffer ? this->bufferThreshold : 0);
+
+    bool measure = this->measuredDistance <= threshold;
+
+    if (measure == true) {
+      if ((millis() - this->lastMillis) > 1000) {
+        this->detected = true;
+      }
+    } else {
+      this->detected = false;
+      this->lastMillis = millis();
+    }
+  }
+
+  bool isDetected() {
+    return this->detected;
   }
 
   LaserSensor& print() {
