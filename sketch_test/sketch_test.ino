@@ -91,7 +91,7 @@ void listenSensors() {
   int numLaserSensors = sizeof(laserSensors) / sizeof(laserSensors[0]);
   for (int i = 0; i < numLaserSensors; i++) {
     laserSensors[i].debounceListen();
-    // laserSensors[i].print().byValue();
+    laserSensors[i].print().byValue();
 
     if (laserSensors[i].isDetected()) {
       Serial.println("Obstacle Detected!");
@@ -107,7 +107,7 @@ void dangerListenSensors() {
   for (int i = 0; i < numLaserSensors; i++) {
     laserSensors[i].setDangerBuffer(true);
     laserSensors[i].debounceListen();
-    // laserSensors[i].print().byValue();
+    laserSensors[i].print().byValue();
 
     if (!laserSensors[i].isDetected()) {
       Serial.println("Vehicle Escaped from Obstacle!");
