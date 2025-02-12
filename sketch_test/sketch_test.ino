@@ -58,13 +58,9 @@ void loop() {
     relay.cut();
     warningLight.on();
     speaker.on();
-    dangerListenSensors();
 
     // sensor keep detection, once escape from obstacle. switch to RUNNING
-    // if (quickRecovery.success()) {
-    //   detectSystem.setStatus(RUNNING);
-    //   detectSystem.printStatus();
-    // }
+    dangerListenSensors();
 
     if (pressButton.isPressed()) {
       Serial.println("10s Button Pressed");
@@ -109,6 +105,7 @@ void listenSensors() {
 void dangerListenSensors() {
   int numLaserSensors = sizeof(laserSensors) / sizeof(laserSensors[0]);
   for (int i = 0; i < numLaserSensors; i++) {
+    laserSensors[i].setDangerBuffer(true);
     laserSensors[i].debounceListen();
     laserSensors[i].print().byValue();
 

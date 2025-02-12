@@ -7,7 +7,7 @@ private:
   // threshold and buffer
   float baseThreshold = 500;  // 500 or 300
   float tunningBuffer;        // for tunning each sensors, can be +ve/-ve number
-  float dangerBuffer = 100;   // used when vehicle suddenly stop
+  float dangerBuffer;         // used when vehicle suddenly stop
 
   // measured distance
   float measuredDistance;
@@ -33,6 +33,10 @@ public:
 
   void setBaseThreshold(bool toggle) {
     this->baseThreshold = toggle ? 300 : 500;
+  }
+
+  void setDangerBuffer(bool toggle) {
+    this->dangerBuffer = toggle ? 100 : 0;  // true = 100, false = 0
   }
 
   void debounceListen() {
