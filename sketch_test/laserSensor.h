@@ -5,9 +5,9 @@ private:
   byte pin;
 
   // threshold and buffer
-  float baseThreshold = 500;  // 500 or 300
-  float tunningBuffer;        // for tunning each sensors, can be +ve/-ve number
-  float dangerBuffer;         // used when vehicle suddenly stop
+  float baseThreshold = 500;  // 500 (default) or 300
+  float tunningBuffer = 0;    // added when constructed, for tunning each sensors, can be +ve/-ve number
+  float dangerBuffer = 0;     // used when vehicle suddenly stop
 
   // measured distance
   float measuredDistance;
