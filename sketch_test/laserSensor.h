@@ -3,10 +3,14 @@
 class LaserSensor {
 private:
   byte pin;
-  const float baseThreshold = 500;
-  float bufferThreshold;
+
+  // threshold and buffer
+  float baseThreshold = 500;  // 500 or 300
+  float tunningBuffer;        // for tunning each sensors, can be +ve/-ve number
+  float dangerBuffer = 100;   // used when vehicle suddenly stop
+
+  // measured distance
   float measuredDistance;
-  bool needBuffer;
 
   // for debounce
   unsigned long lastMillis;
@@ -22,27 +26,19 @@ private:
   }
 
 public:
-  LaserSensor(byte pin, float bufferThreshold)
-    : pin(pin), bufferThreshold(bufferThreshold), needBuffer(false) {
+  LaserSensor(byte pin, float tunningBuffer)
+    : pin(pin), tunningBuffer(tunningBuffer) {
     pinMode(this->pin, INPUT);
   }
 
-  void setBuffer(bool toggle) {
-    this->needBuffer = toggle;
-  }
-
-  void normalListen() {
-    float reading = analogRead(this->pin);
-    this->measuredDistance = this->calculateDistance(reading);
-    float threshold = this->baseThreshold + (this->needBuffer ? this->bufferThreshold : 0);
-
-    this->detected = this->measuredDistance <= threshold;
+  void setBaseThreshold(bool toggle) {
+    this->baseThreshold = toggle ? 300 : 500;
   }
 
   void debounceListen() {
     float reading = analogRead(this->pin);
     this->measuredDistance = this->calculateDistance(reading);
-    float threshold = this->baseThreshold + (this->needBuffer ? this->bufferThreshold : 0);
+    float threshold = this->baseThreshold + this->tunningBuffer + this->dangerBuffer;
 
     bool measure = this->measuredDistance <= threshold;
 

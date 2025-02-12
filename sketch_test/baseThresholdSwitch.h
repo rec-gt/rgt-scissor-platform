@@ -1,12 +1,12 @@
 #include "Arduino.h"
 
-class BufferSwitch {
+class BaseThresholdSwitch {
 private:
   byte pin;
   byte status;
   byte previousStatus;
 public:
-  BufferSwitch(byte pin)
+  BaseThresholdSwitch(byte pin)
     : pin(pin) {
     pinMode(this->pin, INPUT);
   }

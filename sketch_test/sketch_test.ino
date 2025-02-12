@@ -6,7 +6,7 @@
 #include "speaker.h"
 #include "countdown.h"
 #include "laserSensor.h"
-#include "bufferSwitch.h"
+#include "baseThresholdSwitch.h"
 
 DetectSystem detectSystem;
 
@@ -16,12 +16,12 @@ Light powerLight(6);
 Light warningLight(8);
 // WarningLight warningLight(8);
 Speaker speaker(10);
-BufferSwitch bufferSwitch(12);  // OK
+BaseThresholdSwitch baseThresholdSwitch(12);  // OK
 
 CountdownTimer countdownTimer(10);
 
 LaserSensor laserSensors[] = {
-  LaserSensor(A0, -200),  // +ve: easy to stop, -ve: not easy to stop
+  LaserSensor(A0, 0),  // +ve: easy to stop, -ve: not easy to stop
   // LaserSensor(A1, 0),
   // LaserSensor(A2, 0),
   // LaserSensor(A3, 0),
@@ -41,10 +41,11 @@ void setup() {
 
 void loop() {
   powerLight.on();
-  pressButton.debounceListen();
-  bufferSwitch.listen();
 
-  setSensorsBuffer(bufferSwitch.isOn());
+  pressButton.debounceListen();
+
+  baseThresholdSwitch.listen();
+  setBaseThreshold(baseThresholdSwitch.isOn());
 
   if (detectSystem.getStatus() == RUNNING) {
     relay.connect();
@@ -57,8 +58,9 @@ void loop() {
     relay.cut();
     warningLight.on();
     speaker.on();
+    dangerListenSensors();
 
-    // in-case the detection is determined as "PASS"
+    // sensor keep detection, once escape from obstacle. switch to RUNNING
     // if (quickRecovery.success()) {
     //   detectSystem.setStatus(RUNNING);
     //   detectSystem.printStatus();
@@ -82,14 +84,29 @@ void loop() {
   delay(100);
 }
 
-void setSensorsBuffer(bool toggle) {
+void setBaseThreshold(bool toggle) {
   int numLaserSensors = sizeof(laserSensors) / sizeof(laserSensors[0]);
   for (int i = 0; i < numLaserSensors; i++) {
-    laserSensors[i].setBuffer(toggle);
+    laserSensors[i].setBaseThreshold(toggle);  // true = 300, false = 500
   }
 }
 
 void listenSensors() {
+  int numLaserSensors = sizeof(laserSensors) / sizeof(laserSensors[0]);
+  for (int i = 0; i < numLaserSensors; i++) {
+    laserSensors[i].debounceListen();
+    laserSensors[i].print().byValue();
+
+    if (laserSensors[i].isDetected()) {
+      Serial.println("Obstacle Detected!");
+      detectSystem.setStatus(STOPPED);
+      detectSystem.printStatus();
+      break;
+    };
+  }
+}
+
+void dangerListenSensors() {
   int numLaserSensors = sizeof(laserSensors) / sizeof(laserSensors[0]);
   for (int i = 0; i < numLaserSensors; i++) {
     laserSensors[i].debounceListen();
