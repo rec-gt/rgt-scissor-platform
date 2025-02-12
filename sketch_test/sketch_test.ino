@@ -41,7 +41,7 @@ void setup() {
 
 void loop() {
   powerLight.on();
-  pressButton.listen();
+  pressButton.debounceListen();
   bufferSwitch.listen();
 
   setSensorsBuffer(bufferSwitch.isOn());
@@ -93,7 +93,7 @@ void listenSensors() {
   int numLaserSensors = sizeof(laserSensors) / sizeof(laserSensors[0]);
   for (int i = 0; i < numLaserSensors; i++) {
     bool detected = laserSensors[i].detectObstacle();
-
+    laserSensors[i].print().byValue();
     if (detected) {
       Serial.println("Obstacle Detected!");
       detectSystem.setStatus(STOPPED);
