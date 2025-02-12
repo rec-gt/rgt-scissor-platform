@@ -28,7 +28,6 @@ public:
       this->lastMillis = millis();
     }
 
-
     // Serial.print(reading);
     // Serial.print(", ");
     // Serial.print(this->state);
