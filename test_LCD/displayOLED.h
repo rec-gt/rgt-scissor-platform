@@ -10,12 +10,23 @@
 #define SDA 20
 #define SCL 21  // SCL/SCK
 
-#define LINE_HEIGHT 18  // SCL/SCK
+#define LH1 18  // Line Height or y-position
+#define LH2 36
+#define LH3 54
 
 U8G2_SSD1306_128X64_NONAME_F_SW_I2C u8g2(U8G2_R0, SCL, SDA, U8X8_PIN_NONE);
 
 // 8個中文字為上限
 class DisplayOLED {
+private:
+  void clearAll() {
+    u8g2.clearBuffer();
+  }
+
+  void plotMsg(byte idx, String str) {
+    u8g2.setCursor(0, idx == 0 ? LH1 : (idx == 1 ? LH2 : LH3));
+    u8g2.print(str);
+  }
 public:
   bool init() {
     if (!u8g2.begin()) {
@@ -26,27 +37,57 @@ public:
     u8g2.enableUTF8Print();
     u8g2.setFont(u8g2_font_unifont_t_chinese1);
     u8g2.setFontDirection(0);
-    u8g2.clearBuffer();
+    u8g2.clearDisplay();
     return true;
   }
 
-  void print1() {
-    u8g2.clearBuffer();
-    u8g2.setCursor(0, LINE_HEIGHT);
+  void printTest() {
+    this->clearAll();
+    u8g2.setCursor(0, LH1);
     u8g2.print("感應器感應器感應");
-    u8g2.setCursor(0, LINE_HEIGHT * 2);
+    u8g2.setCursor(0, LH2);
     u8g2.print("感應器感應器感應");
-    u8g2.setCursor(0, LINE_HEIGHT * 3);
+    u8g2.setCursor(0, LH3);
     u8g2.print("感應器12318");
     u8g2.sendBuffer();
   }
 
-  void errSensor(byte num) {
-    u8g2.clearBuffer();
-    u8g2.setCursor(0, LINE_HEIGHT);
-    u8g2.print("感應器");
+  // systemMsg
+  void systemRunning() {
+    this->clearAll();
+    this->plotMsg(0, "系統運作中");
+    u8g2.sendBuffer();
+  }
+
+  void systemStopped() {
+    this->clearAll();
+    this->plotMsg(0, "系統停止運作");
+    u8g2.sendBuffer();
+  }
+
+  void systemWaitFor() {
+    this->clearAll();
+    this->plotMsg(0, "系統暫時允許");
+    this->plotMsg(1, "運作十秒");
+    u8g2.sendBuffer();
+  }
+
+  void errSensorDetected(byte num) {
+    this->clearAll();
+    u8g2.setCursor(0, LH1);
+    u8g2.print("感應器 ");
     u8g2.print(num);
-    u8g2.print("故障一！");
+    u8g2.setCursor(0, LH2);
+    u8g2.print("偵測到障礙物！");
+    u8g2.sendBuffer();
+  }
+
+  void errSensorFail(byte num) {
+    this->clearAll();
+    u8g2.setCursor(0, LH1);
+    u8g2.print("感應器 ");
+    u8g2.print(num);
+    u8g2.print(" 故障！");
     u8g2.sendBuffer();
   }
 };
