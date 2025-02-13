@@ -10,9 +10,17 @@ void setup() {
 
   displayOLED.systemRunning();
   delay(1000);
+
+  displayOLED.systemWaitFor();
+  delay(1000);
+
   displayOLED.systemStopped();
   delay(1000);
-  displayOLED.systemWaitFor();
+
+  displayOLED.sensorDetected("7");
+  delay(1000);
+
+  displayOLED.wannaQuit();
   delay(1000);
 }
 

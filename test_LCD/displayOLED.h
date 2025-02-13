@@ -64,15 +64,14 @@ public:
 
   void systemStopped() {
     this->clear();
-    this->plotMsg(0, "偵測到障礙物");
-    this->plotMsg(1, "系統停止運作！");
+    this->plotMsg(0, "系統暫停運作！");
     this->send();
   }
 
   void systemWaitFor() {
     this->clear();
-    this->plotMsg(0, "系統允許");
-    this->plotMsg(1, "短暫運作十秒！");
+    this->plotMsg(0, "系統允許暫時");
+    this->plotMsg(1, "運作十秒！");
     this->send();
   }
 
@@ -80,13 +79,20 @@ public:
   void sensorDetected(String str) {
     this->clear();
     this->plotMsg(0, "感應器" + str);
-    this->plotMsg(1, "偵測到障礙物！");
+    this->plotMsg(1, "偵測到障礙物");
+    this->plotMsg(2, "系統暫停運作！");
     this->send();
   }
 
   void sensorFail(String str) {
     this->clear();
     this->plotMsg(0, "感應器 " + str + " 故障！");
+    this->send();
+  }
+
+  void wannaQuit() {
+    this->clear();
+    this->plotMsg(1, "心很累，想quit");
     this->send();
   }
 };
