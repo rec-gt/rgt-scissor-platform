@@ -22,6 +22,12 @@ private:
   void clearAll() {
     u8g2.clearBuffer();
   }
+
+  void print(byte lh, String str) {
+    u8g2.setCursor(0, lh == 0 ? LH1 : (lh == 1 ? LH2 : LH3));
+    u8g2.print(str);
+    u8g2.sendBuffer();
+  }
 public:
   bool init() {
     if (!u8g2.begin()) {
@@ -50,9 +56,7 @@ public:
   // system message
   void systemRunning() {
     this->clearAll();
-    u8g2.setCursor(0, LH1);
-    u8g2.print("系統運作中");
-    u8g2.sendBuffer();
+    this->print(0, "系統運作中");
   }
 
   void systemStopped() {
@@ -75,12 +79,11 @@ public:
   }
 
   // sensor errors
-  void sensorDetected(byte num) {
+  void sensorDetected(String str) {
     this->clearAll();
 
     u8g2.setCursor(0, LH1);
-    u8g2.print("感應器 ");
-    u8g2.print(num);
+    u8g2.print("感應器 " + str);
 
     u8g2.setCursor(0, LH2);
     u8g2.print("偵測到障礙物！");
@@ -88,14 +91,9 @@ public:
     u8g2.sendBuffer();
   }
 
-  void sensorFail(byte num) {
+  void sensorFail(String str) {
     this->clearAll();
-
-    u8g2.setCursor(0, LH1);
-    u8g2.print("感應器 ");
-    u8g2.print(num);
-    u8g2.print(" 故障！");
-
+    this->print(0, "感應器 " + str + " 故障！");
     u8g2.sendBuffer();
   }
 };
