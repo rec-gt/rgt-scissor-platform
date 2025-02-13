@@ -47,7 +47,7 @@ public:
     u8g2.sendBuffer();
   }
 
-  // systemMsg
+  // system message
   void systemRunning() {
     this->clearAll();
     u8g2.setCursor(0, LH1);
@@ -64,27 +64,38 @@ public:
 
   void systemWaitFor() {
     this->clearAll();
+
     u8g2.setCursor(0, LH1);
-    u8g2.print("系統允許十秒運作");
+    u8g2.print("系統允許");
+
+    u8g2.setCursor(0, LH2);
+    u8g2.print("短暫運作十秒");
+
     u8g2.sendBuffer();
   }
 
-  void errSensorDetected(byte num) {
+  // sensor errors
+  void sensorDetected(byte num) {
     this->clearAll();
+
     u8g2.setCursor(0, LH1);
     u8g2.print("感應器 ");
     u8g2.print(num);
+
     u8g2.setCursor(0, LH2);
     u8g2.print("偵測到障礙物！");
+
     u8g2.sendBuffer();
   }
 
-  void errSensorFail(byte num) {
+  void sensorFail(byte num) {
     this->clearAll();
+
     u8g2.setCursor(0, LH1);
     u8g2.print("感應器 ");
     u8g2.print(num);
     u8g2.print(" 故障！");
+
     u8g2.sendBuffer();
   }
 };

@@ -15,9 +15,9 @@ void setup() {
   // displayOLED.systemWaitFor();
   // delay(1000);
 
-  displayOLED.errSensorDetected(1);
-  delay(1000);
-  displayOLED.errSensorFail(2);
+  displayOLED.sensorFail(2);
+  displayOLED.sensorDetected(1);
+
 }
 
 void loop() {
