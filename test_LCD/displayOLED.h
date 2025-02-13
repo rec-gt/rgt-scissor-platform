@@ -74,20 +74,14 @@ public:
 
   void errSensorDetected(byte num) {
     this->clearAll();
-    u8g2.setCursor(0, LH1);
-    u8g2.print("感應器 ");
-    u8g2.print(num);
-    u8g2.setCursor(0, LH2);
-    u8g2.print("偵測到障礙物！");
+    this->plotMsg(0, strcat("感應器: ", num));
+    this->plotMsg(1, "偵測到障礙物！");
     u8g2.sendBuffer();
   }
 
   void errSensorFail(byte num) {
     this->clearAll();
-    u8g2.setCursor(0, LH1);
-    u8g2.print("感應器 ");
-    u8g2.print(num);
-    u8g2.print(" 故障！");
+    this->plotMsg(0, strcat("感應器: ", strcat(num, " 故障！")));
     u8g2.sendBuffer();
   }
 };
