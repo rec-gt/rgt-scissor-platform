@@ -19,13 +19,16 @@ U8G2_SSD1306_128X64_NONAME_F_SW_I2C u8g2(U8G2_R0, SCL, SDA, U8X8_PIN_NONE);
 // 8個中文字為上限
 class DisplayOLED {
 private:
-  void clearAll() {
+  void clear() {
     u8g2.clearBuffer();
   }
 
-  void print(byte lh, String str) {
+  void plotMsg(byte lh, String str) {
     u8g2.setCursor(0, lh == 0 ? LH1 : (lh == 1 ? LH2 : LH3));
     u8g2.print(str);
+  }
+
+  void send() {
     u8g2.sendBuffer();
   }
 public:
@@ -43,57 +46,43 @@ public:
   }
 
   void printTest() {
-    this->clearAll();
-    u8g2.setCursor(0, LH1);
-    u8g2.print("感應器感應器感應");
-    u8g2.setCursor(0, LH2);
-    u8g2.print("感應器感應器感應");
-    u8g2.setCursor(0, LH3);
-    u8g2.print("感應器12318");
-    u8g2.sendBuffer();
+    this->clear();
+    this->plotMsg(0, "123");
+    this->plotMsg(1, "456");
+    this->send();
   }
 
   // system message
   void systemRunning() {
-    this->clearAll();
-    this->print(0, "系統運作中");
+    this->clear();
+    this->plotMsg(0, "系統運作中");
+    this->send();
   }
 
   void systemStopped() {
-    this->clearAll();
-    u8g2.setCursor(0, LH1);
-    u8g2.print("系統停止運作");
-    u8g2.sendBuffer();
+    this->clear();
+    this->plotMsg(0, "系統停止運作");
+    this->send();
   }
 
   void systemWaitFor() {
-    this->clearAll();
-
-    u8g2.setCursor(0, LH1);
-    u8g2.print("系統允許");
-
-    u8g2.setCursor(0, LH2);
-    u8g2.print("短暫運作十秒");
-
-    u8g2.sendBuffer();
+    this->clear();
+    this->plotMsg(0, "系統允許");
+    this->plotMsg(1, "短暫運作十秒");
+    this->send();
   }
 
   // sensor errors
   void sensorDetected(String str) {
-    this->clearAll();
-
-    u8g2.setCursor(0, LH1);
-    u8g2.print("感應器 " + str);
-
-    u8g2.setCursor(0, LH2);
-    u8g2.print("偵測到障礙物！");
-
-    u8g2.sendBuffer();
+    this->clear();
+    this->plotMsg(0, "感應器" + str);
+    this->plotMsg(1, "偵測到障礙物！");
+    this->send();
   }
 
   void sensorFail(String str) {
-    this->clearAll();
-    this->print(0, "感應器 " + str + " 故障！");
-    u8g2.sendBuffer();
+    this->clear();
+    this->plotMsg(0, "感應器 " + str + " 故障！");
+    this->send();
   }
 };

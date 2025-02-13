@@ -8,15 +8,15 @@ void setup() {
     // cut relay
   }
 
-  // displayOLED.systemRunning();
-  // delay(1000);
-  // displayOLED.systemStopped();
-  // delay(1000);
-  // displayOLED.systemWaitFor();
-  // delay(1000);
+  displayOLED.systemRunning();
+  delay(1000);
+  displayOLED.systemStopped();
+  delay(1000);
+  displayOLED.systemWaitFor();
+  delay(1000);
 
-  displayOLED.sensorFail("2");
-  displayOLED.sensorDetected("1" + String(4));
+  displayOLED.sensorFail("2001");
+  displayOLED.sensorDetected("1+3=" + String(4));
 }
 
 void loop() {
