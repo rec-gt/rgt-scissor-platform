@@ -42,9 +42,6 @@ public:
     u8g2.setFont(u8g2_font_unifont_t_chinese1);
     u8g2.setFontDirection(0);
     u8g2.clearDisplay();
-    this->plotMsg(1, "正在加載保護系統...");
-    this->send();
-    delay(3000);
     return true;
   }
 
