@@ -22,11 +22,6 @@ private:
   void clearAll() {
     u8g2.clearBuffer();
   }
-
-  void plotMsg(byte idx, String str) {
-    u8g2.setCursor(0, idx == 0 ? LH1 : (idx == 1 ? LH2 : LH3));
-    u8g2.print(str);
-  }
 public:
   bool init() {
     if (!u8g2.begin()) {
@@ -55,33 +50,41 @@ public:
   // systemMsg
   void systemRunning() {
     this->clearAll();
-    this->plotMsg(0, "系統運作中");
+    u8g2.setCursor(0, LH1);
+    u8g2.print("系統運作中");
     u8g2.sendBuffer();
   }
 
   void systemStopped() {
     this->clearAll();
-    this->plotMsg(0, "系統停止運作");
+    u8g2.setCursor(0, LH1);
+    u8g2.print("系統停止運作");
     u8g2.sendBuffer();
   }
 
   void systemWaitFor() {
     this->clearAll();
-    this->plotMsg(0, "系統暫時允許");
-    this->plotMsg(1, "運作十秒");
+    u8g2.setCursor(0, LH1);
+    u8g2.print("系統允許十秒運作");
     u8g2.sendBuffer();
   }
 
   void errSensorDetected(byte num) {
     this->clearAll();
-    this->plotMsg(0, strcat("感應器: ", num));
-    this->plotMsg(1, "偵測到障礙物！");
+    u8g2.setCursor(0, LH1);
+    u8g2.print("感應器 ");
+    u8g2.print(num);
+    u8g2.setCursor(0, LH2);
+    u8g2.print("偵測到障礙物！");
     u8g2.sendBuffer();
   }
 
   void errSensorFail(byte num) {
     this->clearAll();
-    this->plotMsg(0, strcat("感應器: ", strcat(num, " 故障！")));
+    u8g2.setCursor(0, LH1);
+    u8g2.print("感應器 ");
+    u8g2.print(num);
+    u8g2.print(" 故障！");
     u8g2.sendBuffer();
   }
 };
