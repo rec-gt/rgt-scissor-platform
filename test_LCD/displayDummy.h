@@ -1,12 +1,12 @@
+enum StateEnum {
+  INIT,
+  PRINT_ERR,
+  PRINT_MSG,
+  PRINT_WARNING,
+};
+
 class DisplayOLED {
 private:
-  enum StateEnum {
-    INIT,
-    PRINT_ERR,
-    PRINT_MSG,
-    PRINT_WARNING,
-  };
-
   StateEnum lastState;
 
   void clear() {
