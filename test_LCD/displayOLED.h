@@ -14,13 +14,16 @@
 #define LH2 36
 #define LH3 54
 
-U8G2_SSD1306_128X64_NONAME_F_SW_I2C u8g2(U8G2_R0, SCL, SDA, U8X8_PIN_NONE);
+U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, SCL, SDA, U8X8_PIN_NONE);
 
 // 8個中文字為上限
 class DisplayOLED {
 private:
+  bool allowPrint = false;
+
   void clear() {
     u8g2.clearBuffer();
+    u8g2.clear();
   }
 
   void plotMsg(byte lh, String str) {
@@ -30,6 +33,7 @@ private:
 
   void send() {
     u8g2.sendBuffer();
+    this->allowPrint = false;
   }
 public:
   bool init() {
@@ -42,10 +46,17 @@ public:
     u8g2.setFont(u8g2_font_unifont_t_chinese1);
     u8g2.setFontDirection(0);
     u8g2.clearDisplay();
+
+    // welcome msg
     this->plotMsg(1, "正在加載保護系統...");
     this->send();
     delay(3000);
+
     return true;
+  }
+
+  void allowOnce() {
+    this->allowPrint = true;
   }
 
   void printTest() {
@@ -57,9 +68,11 @@ public:
 
   // system message
   void systemRunning() {
-    this->clear();
-    this->plotMsg(0, "系統運作中！");
-    this->send();
+    if (this->allowPrint) {
+      this->clear();
+      this->plotMsg(0, "系統運作中！");
+      this->send();
+    }
   }
 
   void systemStopped() {

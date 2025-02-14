@@ -2,26 +2,27 @@
 #include "pressButton.h"
 #include "relay.h"
 #include "light.h"
-// #include "warningLight.h"
 #include "speaker.h"
 #include "countdown.h"
 #include "laserSensor.h"
 #include "baseThresholdSwitch.h"
+#include "displayOLED.h"
 
 DetectSystem detectSystem;
+
+DisplayOLED displayOLED;
 
 PressButton pressButton(2);
 Relay relay(4);
 Light powerLight(6);
 Light warningLight(8);
-// WarningLight warningLight(8);
 Speaker speaker(10);
 BaseThresholdSwitch baseThresholdSwitch(12);  // OK
 
 CountdownTimer countdownTimer(10);
 
 LaserSensor laserSensors[] = {
-  LaserSensor(A0, 0),  // +ve: easy to stop, -ve: not easy to stop
+  LaserSensor(A0, 0),
   // LaserSensor(A1, 0),
   // LaserSensor(A2, 0),
   // LaserSensor(A3, 0),
@@ -35,8 +36,10 @@ LaserSensor laserSensors[] = {
 
 void setup() {
   Serial.begin(9600);
+  if (!displayOLED.init()) {
+    relay.cut();
+  }
   detectSystem.setStatus(RUNNING);
-  detectSystem.printStatus();
 }
 
 void loop() {
@@ -59,13 +62,12 @@ void loop() {
     warningLight.on();
     speaker.on();
 
-    // sensor keep detection, once escape from obstacle. switch to RUNNING
+    // sensor keep detection, once escape from obstacle, switch to RUNNING
     dangerListenSensors();
 
     if (pressButton.isPressed()) {
       Serial.println("10s Button Pressed");
       detectSystem.setStatus(ALLOW_10S);
-      detectSystem.printStatus();
       countdownTimer.setStart(millis());
     }
   }
@@ -96,7 +98,6 @@ void listenSensors() {
     if (laserSensors[i].isDetected()) {
       Serial.println("Obstacle Detected!");
       detectSystem.setStatus(STOPPED);
-      detectSystem.printStatus();
       break;
     };
   }
@@ -112,7 +113,6 @@ void dangerListenSensors() {
     if (!laserSensors[i].isDetected()) {
       Serial.println("Vehicle Escaped from Obstacle!");
       detectSystem.setStatus(RUNNING);
-      detectSystem.printStatus();
       break;
     };
   }
@@ -121,5 +121,4 @@ void dangerListenSensors() {
 void countDownCallback() {
   Serial.println("Countdown Finish!");
   detectSystem.setStatus(RUNNING);
-  detectSystem.printStatus();
 }

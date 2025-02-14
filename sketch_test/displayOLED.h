@@ -19,6 +19,8 @@ U8G2_SSD1306_128X64_NONAME_F_SW_I2C u8g2(U8G2_R0, SCL, SDA, U8X8_PIN_NONE);
 // 8個中文字為上限
 class DisplayOLED {
 private:
+  bool preventLoop = true;
+
   void clear() {
     u8g2.clearBuffer();
   }
@@ -42,6 +44,12 @@ public:
     u8g2.setFont(u8g2_font_unifont_t_chinese1);
     u8g2.setFontDirection(0);
     u8g2.clearDisplay();
+
+    // welcome msg
+    this->plotMsg(1, "正在加載保護系統...");
+    this->send();
+    delay(3000);
+
     return true;
   }
 
@@ -54,6 +62,10 @@ public:
 
   // system message
   void systemRunning() {
+    if (this->preventLoop) {
+      return;
+    }
+    
     this->clear();
     this->plotMsg(0, "系統運作中！");
     this->send();
@@ -61,15 +73,14 @@ public:
 
   void systemStopped() {
     this->clear();
-    this->plotMsg(0, "偵測到障礙物");
-    this->plotMsg(1, "系統停止運作！");
+    this->plotMsg(0, "系統暫停運作！");
     this->send();
   }
 
   void systemWaitFor() {
     this->clear();
-    this->plotMsg(0, "系統允許");
-    this->plotMsg(1, "短暫運作十秒！");
+    this->plotMsg(0, "系統允許暫時");
+    this->plotMsg(1, "運作十秒！");
     this->send();
   }
 
@@ -77,13 +88,20 @@ public:
   void sensorDetected(String str) {
     this->clear();
     this->plotMsg(0, "感應器" + str);
-    this->plotMsg(1, "偵測到障礙物！");
+    this->plotMsg(1, "偵測到障礙物");
+    this->plotMsg(2, "系統暫停運作！");
     this->send();
   }
 
   void sensorFail(String str) {
     this->clear();
     this->plotMsg(0, "感應器 " + str + " 故障！");
+    this->send();
+  }
+
+  void wannaQuit() {
+    this->clear();
+    this->plotMsg(1, "心很累，想quit");
     this->send();
   }
 };
