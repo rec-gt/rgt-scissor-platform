@@ -1,29 +1,22 @@
 class DisplayOLED {
 private:
-  enum MsgStatus {
+  enum StateEnum {
     INIT,
     PRINT_ERR,
     PRINT_MSG,
     PRINT_WARNING,
   };
 
-  MsgStatus lastState;
-  MsgStatus currState;
+  StateEnum lastState;
 
   void clear() {
   }
 
-  void send() {
+  void plotMsg(byte lh, String msg) {
+    Serial.println(msg);
   }
 
-  void plotMsg(String msg, MsgStatus currState) {
-    if (this->lastState != currState) {
-      this->clear();
-      Serial.println(msg);
-      this->send();
-
-      this->lastState = currState;
-    }
+  void send() {
   }
 public:
   bool init() {
@@ -31,15 +24,35 @@ public:
     return true;
   }
 
-  void print1() {
-    this->plotMsg("ERR001", PRINT_ERR);
-  }
+  void print(StateEnum currState, String addStr = "") {
+    if (this->lastState == currState) {
+      return;
+    }
+    this->lastState = currState;
 
-  void print2() {
-    this->plotMsg("MSG001", PRINT_MSG);
-  }
+    // handle all plotting cases here
+    this->clear();
 
-  void print3() {
-    this->plotMsg("WARN001", PRINT_WARNING);
+    switch (currState) {
+      case INIT:
+        this->plotMsg(1, "正在加載保護系統...");
+        break;
+      case PRINT_ERR:
+        this->plotMsg(0, "感應器" + addStr);
+        this->plotMsg(1, "偵測到障礙物");
+        this->plotMsg(2, "系統暫停運作！");
+        break;
+      case PRINT_MSG:
+        this->plotMsg(0, "系統允許暫時");
+        this->plotMsg(1, "運作十秒！");
+        break;
+      case PRINT_WARNING:
+        this->plotMsg(0, "系統暫停運作！");
+        break;
+      default:
+        break;
+    }
+
+    this->send();
   }
 };
