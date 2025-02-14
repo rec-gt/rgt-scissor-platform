@@ -43,11 +43,11 @@ public:
         this->plot(2, "系統暫停運作！");
         break;
       case PRINT_MSG:
-        this->plot(0, "系統允許暫時");
+        this->plot(0, "系統允許暫時" + addStr);
         this->plot(1, "運作十秒！");
         break;
       case PRINT_WARNING:
-        this->plot(0, "系統暫停運作！");
+        this->plot(0, "系統暫停運作！" + addStr);
         break;
       default:
         break;

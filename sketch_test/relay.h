@@ -15,13 +15,13 @@ public:
     // NC
     // COM -------|
     // NO --------|
-    digitalWrite(this->pin, LOW);
+    digitalWrite(this->pin, HIGH);
   }
 
   void cut() {
     // NC --------|
     // COM -------|
     // NO
-    digitalWrite(this->pin, HIGH);
+    digitalWrite(this->pin, LOW);
   }
 };

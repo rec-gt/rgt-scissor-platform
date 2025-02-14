@@ -26,18 +26,18 @@ void loop() {
   Serial.println("Sensor Working");
 
   if (systemStatus == 1) {
-    displayOLED.print(PRINT_ERR);
+    displayOLED.print(PRINT_ERR, "Logical String");
   }
 
   if (systemStatus == 2) {
     if (digitalRead(PIN2) == HIGH) {
-      displayOLED.print(PRINT_MSG);
+      displayOLED.print(PRINT_MSG, "Logical String");
       systemStatus = 3;
     }
   }
 
   if (systemStatus == 3) {
-    displayOLED.print(PRINT_WARNING);
+    displayOLED.print(PRINT_WARNING,"Logical String");
   }
 
   delay(1000);

@@ -2,20 +2,21 @@
 #include "pressButton.h"
 #include "relay.h"
 #include "light.h"
+#include "warningLight.h"
 #include "speaker.h"
 #include "countdown.h"
 #include "laserSensor.h"
 #include "baseThresholdSwitch.h"
-#include "displayOLED.h"
+// #include "displayOLED.h"
 
 DetectSystem detectSystem;
 
-DisplayOLED displayOLED;
+// DisplayOLED displayOLED;
 
 PressButton pressButton(2);
 Relay relay(4);
 Light powerLight(6);
-Light warningLight(8);
+WarningLight warningLight(9);
 Speaker speaker(10);
 BaseThresholdSwitch baseThresholdSwitch(12);  // OK
 
@@ -36,9 +37,9 @@ LaserSensor laserSensors[] = {
 
 void setup() {
   Serial.begin(9600);
-  if (!displayOLED.init()) {
-    relay.cut();
-  }
+  // if (!displayOLED.init()) {
+  //   relay.cut();
+  // }
   detectSystem.setStatus(RUNNING);
 }
 
@@ -66,9 +67,9 @@ void loop() {
     dangerListenSensors();
 
     if (pressButton.isPressed()) {
-      Serial.println("10s Button Pressed");
-      detectSystem.setStatus(ALLOW_10S);
-      countdownTimer.setStart(millis());
+      // Serial.println("10s Button Pressed");
+      // detectSystem.setStatus(ALLOW_10S);
+      // countdownTimer.setStart(millis());
     }
   }
 

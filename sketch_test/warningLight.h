@@ -13,10 +13,11 @@ public:
   }
 
   void on() {
+
     // 模擬閃爍
     unsigned long currentMillis = millis();
     byte currentStatus = digitalRead(this->pin);
-    if (currentMillis - this->lastMillis > 100) {
+    if (currentMillis - this->lastMillis > 150) {
       this->lastMillis = currentMillis;
 
       if (currentStatus == this->lastStatus) {
