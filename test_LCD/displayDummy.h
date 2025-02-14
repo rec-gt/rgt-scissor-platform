@@ -12,7 +12,7 @@ private:
   void clear() {
   }
 
-  void plotMsg(byte lh, String msg) {
+  void plot(byte lh, String msg) {
     Serial.println(msg);
   }
 
@@ -35,19 +35,19 @@ public:
 
     switch (currState) {
       case INIT:
-        this->plotMsg(1, "正在加載保護系統...");
+        this->plot(1, "正在加載保護系統...");
         break;
       case PRINT_ERR:
-        this->plotMsg(0, "感應器" + addStr);
-        this->plotMsg(1, "偵測到障礙物");
-        this->plotMsg(2, "系統暫停運作！");
+        this->plot(0, "感應器" + addStr);
+        this->plot(1, "偵測到障礙物");
+        this->plot(2, "系統暫停運作！");
         break;
       case PRINT_MSG:
-        this->plotMsg(0, "系統允許暫時");
-        this->plotMsg(1, "運作十秒！");
+        this->plot(0, "系統允許暫時");
+        this->plot(1, "運作十秒！");
         break;
       case PRINT_WARNING:
-        this->plotMsg(0, "系統暫停運作！");
+        this->plot(0, "系統暫停運作！");
         break;
       default:
         break;
