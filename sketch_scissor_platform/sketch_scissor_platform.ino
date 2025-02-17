@@ -1,5 +1,5 @@
 // laser sensors pins
-const int SENSOR_PINS[] = { A0, A1, A2, A3, A4, A5, A6, A7, A8, A9 };
+const int SENSOR_PINS[] = { A0, A1, A2, A3, A4, A5, A6, A7,  };
 const int SENSORS_NUM = 10;
 
 const float SENSOR_DISTANCE_BUFFER[] = { 100, 100, 100, 100, 100, 100, 100, 100, 100, 100 };
