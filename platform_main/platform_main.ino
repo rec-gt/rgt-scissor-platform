@@ -1,5 +1,6 @@
 #include "detectSystem.h"
-#include "pressButton.h"
+// #include "pressButton.h"
+#include "pressButton2Pin.h"
 #include "relay.h"
 #include "light.h"
 #include "warningLight.h"
@@ -13,7 +14,7 @@ DetectSystem detectSystem;
 
 DisplayOLED displayOLED;
 
-PressButton pressButton(2);
+PressButton pressButton(3);
 Relay relay(4);
 Light powerLight(6);
 WarningLight warningLight(9);

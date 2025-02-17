@@ -76,8 +76,7 @@ public:
 
     switch (currState) {
       case INIT:
-        // this->plot(1, "正在加載保護系統...");
-        this->plot(1, "正在加載..");
+        this->plot(1, "正在加載系統...");
         break;
       case PRINT_ERR:
         newChar = concatChar("感應器", addStr);
