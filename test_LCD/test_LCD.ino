@@ -8,7 +8,7 @@ DisplayOLED displayOLED;
 #define PIN2 28
 #define PIN3 16
 
-byte systemStatus = 3;
+byte systemStatus = 1;
 
 void setup() {
   Serial.begin(9600);

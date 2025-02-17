@@ -3,7 +3,6 @@
 #include "SPI.h"
 #include "Wire.h"
 #include "Adafruit_GFX.h"
-#include "Adafruit_SSD1306.h"
 
 #define SDA 20
 #define SCL 21  // SCL/SCK
@@ -38,6 +37,13 @@ private:
   void send() {
     u8g2.sendBuffer();
   }
+
+  char* concatChar(char* a, char* b) {
+    char* newChar = new char[strlen(a) + strlen(b) + 1];
+    strcpy(newChar, a);
+    strcat(newChar, b);
+    return newChar;
+  }
 public:
   bool init() {
     if (!u8g2.begin()) {
@@ -65,19 +71,27 @@ public:
     // handle all plotting here
     this->clear();
 
+    char* newChar;
+
     switch (currState) {
       case INIT:
         // this->plot(1, "正在加載保護系統...");
         this->plot(1, "正在加載..");
         break;
       case PRINT_ERR:
-        this->plot(0, ("感應器" + String(addStr)).c_str());
+        newChar = concatChar("感應器", addStr);
+
+        this->plot(0, newChar);
         this->plot(1, "偵測到障礙物");
         this->plot(2, "系統暫停運作！");
         break;
       case PRINT_MSG:
-        this->plot(0, ("系統允許暫時" + String(addStr)).c_str());
+        newChar = concatChar("系統允許暫時", addStr);
+
+        this->plot(0, newChar);
         this->plot(1, "運作十秒！");
+
+        delete[] newChar;
         break;
       case PRINT_WARNING:
         this->plot(0, "系統暫停運作！");
