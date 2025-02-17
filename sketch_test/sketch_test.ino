@@ -7,11 +7,11 @@
 #include "countdown.h"
 #include "laserSensor.h"
 #include "baseThresholdSwitch.h"
-// #include "displayOLED.h"
+#include "displayOLED.h"
 
 DetectSystem detectSystem;
 
-// DisplayOLED displayOLED;
+DisplayOLED displayOLED;
 
 PressButton pressButton(2);
 Relay relay(4);
@@ -37,9 +37,9 @@ LaserSensor laserSensors[] = {
 
 void setup() {
   Serial.begin(9600);
-  // if (!displayOLED.init()) {
-  //   relay.cut();
-  // }
+  if (!displayOLED.init()) {
+    relay.cut();
+  }
   detectSystem.setStatus(RUNNING);
 }
 

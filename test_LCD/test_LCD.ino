@@ -8,7 +8,7 @@ DisplayOLED displayOLED;
 #define PIN2 28
 #define PIN3 16
 
-byte systemStatus = 2;
+byte systemStatus = 3;
 
 void setup() {
   Serial.begin(9600);
@@ -20,7 +20,10 @@ void setup() {
   if (!displayOLED.init()) {
     // cut relay
   }
+
+  delay(1000);
 }
+
 
 void loop() {
   Serial.println("Sensor Working");
@@ -30,14 +33,11 @@ void loop() {
   }
 
   if (systemStatus == 2) {
-    if (digitalRead(PIN2) == HIGH) {
-      displayOLED.print(PRINT_MSG, "Logical String");
-      systemStatus = 3;
-    }
+    displayOLED.print(PRINT_MSG, "Logical String");
   }
 
   if (systemStatus == 3) {
-    displayOLED.print(PRINT_WARNING,"Logical String");
+    displayOLED.print(PRINT_WARNING, "Logical String");
   }
 
   delay(1000);
