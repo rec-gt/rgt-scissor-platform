@@ -1,0 +1,20 @@
+#include "Arduino.h"
+
+class Speaker {
+private:
+  byte pin;
+
+public:
+  Speaker(byte pin)
+    : pin(pin) {
+    pinMode(this->pin, OUTPUT);
+  }
+
+  void on() {
+    digitalWrite(this->pin, HIGH);
+  }
+
+  void off() {
+    digitalWrite(this->pin, LOW);
+  }
+};
